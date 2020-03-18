@@ -48,8 +48,10 @@ app.use(async (req, res, next) => {
       moduleCache[filename] = cachedModule
     }
     req.url = req.url.slice(match[0].replace(/\/$/, '').length) || '/'
-    console.log(req.url)
-    cachedModule.module.exports(req, res)
+    ;(cachedModule.module.exports.default || cachedModule.module.exports)(
+      req,
+      res,
+    )
   } catch (error) {
     next(error)
   }
