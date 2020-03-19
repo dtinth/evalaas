@@ -17,7 +17,6 @@ if (fs.existsSync('.env')) {
 }
 
 const moduleCache = {}
-let _storedData
 
 app.use(async (req, res, next) => {
   const match = req.url.match(/^\/run\/([a-zA-Z0-9_-]+)(?:$|\/)/)
@@ -64,21 +63,7 @@ app.use(async (req, res, next) => {
       moduleCache[filename] = cachedModule
     }
     req.url = req.url.slice(match[0].replace(/\/$/, '').length) || '/'
-    req.webtaskContext = {
-      secrets: await envPromise,
-
-      // TODO: remove
-      storage: {
-        get: cb => cb(null, _storedData),
-        set: (value, cb) => {
-          _storedData = JSON.parse(JSON.stringify(value))
-          cb()
-        },
-      },
-
-      // TODO: remove
-      reload: () => {},
-    }
+    req.env = await envPromise
     ;(cachedModule.module.exports.default || cachedModule.module.exports)(
       req,
       res,

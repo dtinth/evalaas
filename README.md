@@ -68,7 +68,10 @@ gcloud run deploy evalaas \
 1. Create a file that exports an HTTP handler, like this:
 
    ```js
-   module.exports = (req, res) => res.send('ok')
+   module.exports = (req, res) => {
+     const name = process.env.HELLO_TARGET || 'world'
+     res.json({ message: 'hello, ' + name })
+   }
    ```
 
 2. Gzip the code and upload the file to Google Clous Storage:
@@ -85,3 +88,13 @@ gcloud run deploy evalaas \
 
 Your code must reside in a single file.
 You can use [@zeit/ncc](https://github.com/zeit/ncc) to compile code into a single `.js` file.
+
+**Adding in secrets:**
+
+Copy your `.env` file to the bucket:
+
+```
+cat example.js | gzip -9 | gsutil cp - gs://my-bucket/example.env
+```
+
+Access the secrets in `req.env`:
