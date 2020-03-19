@@ -30,7 +30,8 @@ Personal serverless prototyping platform on top of [Google Cloud Run](https://cl
 
 - **All code that runs on it is trusted.**
   This simplifies our security model.
-  Code deployed to evalaas has access to the whole Google Cloud project it resides in,
+  Code deployed to evalaas has access to the whole Node.js runtime
+  as well as the whole Google Cloud project it resides in,
   so don’t run any untrusted code.
   If security is a concern, create a separate Google Cloud project.
 
@@ -50,3 +51,30 @@ gcloud run deploy evalaas \
   --allow-unauthenticated \
   --max-instances=1
 ```
+
+**Environment variable config:**
+
+- `EVALAAS_STORAGE_BASE` The Google Cloud Storage URL that hosts the code files, such as `gs://my-bucket`
+
+**Deploying code to run on evalaas:**
+
+1. Create a file that exports an HTTP handler, like this:
+
+   ```js
+   module.exports = (req, res) => res.send('ok')
+   ```
+
+2. Gzip the code and upload the file to Google Clous Storage:
+
+   ```
+   cat example.js | gzip -9 | gsutil cp - gs://my-bucket/example.js.gz
+   ```
+
+3. Your endpoint is ready:
+
+   ```
+   https://<service>.run.app/run/example
+   ```
+
+Your code must reside in a single file.
+You can use [@zeit/ncc](https://github.com/zeit/ncc) to compile code into a single `.js` file.
