@@ -35,6 +35,13 @@ Personal serverless prototyping platform on top of [Google Cloud Run](https://cl
   so don’t run any untrusted code.
   If security is a concern, create a separate Google Cloud project.
 
+- **The code to be deployed must be in a single .js file.**
+  You can use [@zeit/ncc](https://github.com/zeit/ncc) to compile your code into a single `.js` file.
+  Because of this limitation, you cannot use modules with native addons,
+  but your JS code can require any module the runtime can,
+  that means you can give your code access to native modules by listing them in `package.json`.
+  For example, `puppeteer` and `@google-cloud/vision` is listed inside this project’s `package.json` although it is not used here because some of my projects may use it.
+
 **Building the image on the cloud:**
 
 ```
