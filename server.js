@@ -1,6 +1,8 @@
 const express = require('express')
+const dotenv = require('dotenv')
 const crypto = require('crypto')
 const zlib = require('zlib')
+const fs = require('fs')
 const app = express()
 const { Storage } = require('@google-cloud/storage')
 const storage = new Storage()
@@ -10,7 +12,12 @@ const [, storageBucket, storageKeyPrefix = '/'] = EVALAAS_STORAGE_BASE.match(
   /^gs:\/\/([^/]+)(\/.*)?$/,
 )
 
+if (fs.existsSync('.env')) {
+  dotenv.config()
+}
+
 const moduleCache = {}
+let _storedData
 
 app.use(async (req, res, next) => {
   const match = req.url.match(/^\/run\/([a-zA-Z0-9_-]+)(?:$|\/)/)
@@ -25,11 +32,20 @@ app.use(async (req, res, next) => {
       (storageKeyPrefix.endsWith('/') ? '' : '/') +
       filename
     ).replace(/^\//, '')
-    const file = bucket.file(filePrefix + '.js.gz')
-    const [response] = await file.download()
+
+    const envFile = bucket.file(filePrefix + '.env')
+    const envPromise = envFile
+      .download()
+      .catch(e => '')
+      .then(([b]) => dotenv.parse(String(b)))
+
+    const sourceFile = bucket.file(filePrefix + '.js.gz')
+    const sourceResponse = await sourceFile
+      .download()
+      .then(([buffer]) => buffer)
     const hash = crypto
       .createHash('sha256')
-      .update(response)
+      .update(sourceResponse)
       .digest('hex')
 
     let cachedModule = moduleCache[filename]
@@ -43,11 +59,26 @@ app.use(async (req, res, next) => {
       )
       cachedModule = {
         hash,
-        module: loadModule(filename, response),
+        module: loadModule(filename, sourceResponse),
       }
       moduleCache[filename] = cachedModule
     }
     req.url = req.url.slice(match[0].replace(/\/$/, '').length) || '/'
+    req.webtaskContext = {
+      secrets: await envPromise,
+
+      // TODO: remove
+      storage: {
+        get: cb => cb(null, _storedData),
+        set: (value, cb) => {
+          _storedData = JSON.parse(JSON.stringify(value))
+          cb()
+        },
+      },
+
+      // TODO: remove
+      reload: () => {},
+    }
     ;(cachedModule.module.exports.default || cachedModule.module.exports)(
       req,
       res,
