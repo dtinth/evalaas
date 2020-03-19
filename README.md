@@ -94,7 +94,7 @@ You can use [@zeit/ncc](https://github.com/zeit/ncc) to compile code into a sing
 Copy your `.env` file to the bucket:
 
 ```
-cat example.js | gzip -9 | gsutil cp - gs://my-bucket/example.env
+echo 'HELLO_TARGET=evalaas' | gsutil cp - gs://dtinth-automatron-evalaas/evalaas/example.js.env
 ```
 
-Access the secrets in `req.env`:
+The secrets are now available in `req.env`.
