@@ -90,5 +90,5 @@ function loadModule(filename, compressedSourceBuffer) {
 
 const port = process.env.PORT || 8080
 app.listen(port, () => {
-  console.log('Hello world listening on port', port)
+  console.log('evalaas listening on port', port)
 })
