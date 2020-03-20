@@ -101,13 +101,6 @@ require('source-map-support').install({
     if (cachedModule.hash !== hash) {
       return null
     }
-    console.log('retrieveFile', path)
-    // if (source === 'compiled.js') {
-    //   return {
-    //     url: 'original.js',
-    //     map: fs.readFileSync('compiled.js.map', 'utf8')
-    //   };
-    // }
     return cachedModule.source
   },
 })
