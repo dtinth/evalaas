@@ -98,3 +98,7 @@ echo 'HELLO_TARGET=evalaas' | gsutil cp - gs://dtinth-automatron-evalaas/evalaas
 ```
 
 The secrets are now available in `req.env`.
+
+**Name:** This project is taking a JavaScript `eval` function and exposing as a service.
+So the name comes from `eval` + aaS (-as-a-Service).
+You can pronounce it like “everlast” because I have less fear that Google Cloud will sunset anytime soon.
