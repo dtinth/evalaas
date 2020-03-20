@@ -3,6 +3,7 @@ const dotenv = require('dotenv')
 const crypto = require('crypto')
 const zlib = require('zlib')
 const fs = require('fs')
+const vm = require('vm')
 const app = express()
 const { Storage } = require('@google-cloud/storage')
 const storage = new Storage()
@@ -56,9 +57,11 @@ app.use(async (req, res, next) => {
         '->',
         hash,
       )
+      const sourceCode = zlib.gunzipSync(sourceResponse).toString('utf8')
       cachedModule = {
         hash,
-        module: loadModule(filename, sourceResponse),
+        source: sourceCode,
+        module: loadModule(filename, hash, sourceCode),
       }
       moduleCache[filename] = cachedModule
     }
@@ -73,20 +76,41 @@ app.use(async (req, res, next) => {
   }
 })
 
-function loadModule(filename, compressedSourceBuffer) {
-  const source = zlib.gunzipSync(compressedSourceBuffer).toString('utf8')
+function loadModule(filename, hash, source) {
   const newModule = { exports: {} }
-  const fn = new Function(
-    'require',
-    'exports',
-    'module',
-    '__filename',
-    '__dirname',
+  const fn = vm.compileFunction(
     source,
+    ['require', 'exports', 'module', '__filename', '__dirname'],
+    { filename: `/evalaas/${filename}/${hash}.js` },
   )
   fn(require, newModule.exports, newModule, __filename, __dirname)
   return newModule
 }
+
+require('source-map-support').install({
+  retrieveFile: function(path) {
+    const match = path.match(/^\/evalaas\/([^/]+)\/(\w+)\.js$/)
+    if (!match) {
+      return null
+    }
+    const [, filename, hash] = match
+    const cachedModule = moduleCache[filename]
+    if (!cachedModule) {
+      return null
+    }
+    if (cachedModule.hash !== hash) {
+      return null
+    }
+    console.log('retrieveFile', path)
+    // if (source === 'compiled.js') {
+    //   return {
+    //     url: 'original.js',
+    //     map: fs.readFileSync('compiled.js.map', 'utf8')
+    //   };
+    // }
+    return cachedModule.source
+  },
+})
 
 const port = process.env.PORT || 8080
 app.listen(port, () => {
