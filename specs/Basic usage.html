@@ -31,13 +31,13 @@
    
   <div class="report_chart">
     <div class="chart">
-      <svg id="pie-chart" data-results="0,1,0" data-total="1">
+      <svg id="pie-chart" data-results="0,2,0" data-total="2">
         <path class="status failed" />
-        <path class="shadow failed" data-status="failed"><title>Failed: 0/1</title></path>
+        <path class="shadow failed" data-status="failed"><title>Failed: 0/2</title></path>
         <path class="status passed" />
-        <path class="shadow passed" data-status="passed"><title>Passed: 1/1</title></path>
+        <path class="shadow passed" data-status="passed"><title>Passed: 2/2</title></path>
         <path class="status skipped" />
-        <path class="shadow skipped" data-status="skipped"><title>Skipped: 0/1</title></path>
+        <path class="shadow skipped" data-status="skipped"><title>Skipped: 0/2</title></path>
       </svg>
     </div>
   </div>
@@ -45,15 +45,15 @@
    
   <div class="report_test-results">
     <div class="report_test-result specs">
-        <div class="total-specs" title="Filter all specs"><span class="txt">Total specs</span><span class="value">1</span></div>
+        <div class="total-specs" title="Filter all specs"><span class="txt">Total specs</span><span class="value">2</span></div>
         <div class="fail spec-filter" data-status="failed" title="Filter failed specs"><span class="value">0</span></div>
-        <div class="pass spec-filter" data-status="passed" title="Filter passed specs"><span class="value">1</span></div>
+        <div class="pass spec-filter" data-status="passed" title="Filter passed specs"><span class="value">2</span></div>
         <div class="skip spec-filter" data-status="skipped" title="Filter skipped specs"><span class="value">0</span></div>
     </div>
     <div class="report_test-result scenarios">
-        <div class="total-scenarios"><span class="txt">Total scenario</span><span class="value">4</span></div>
+        <div class="total-scenarios"><span class="txt">Total scenario</span><span class="value">7</span></div>
         <div class="fail scenario-stats" data-status="failed"><span class="value">0</span></div>
-        <div class="pass scenario-stats" data-status="passed"><span class="value">4</span></div>
+        <div class="pass scenario-stats" data-status="passed"><span class="value">7</span></div>
         <div class="skip scenario-stats" data-status="skipped"><span class="value">0</span></div>
     </div>
   </div>
@@ -72,11 +72,11 @@
     </li>
     <li>
       <label>Total Time </label>
-      <span>00:00:00</span>
+      <span>00:00:05</span>
     </li>
     <li>
       <label>Generated On </label>
-      <span>Mar 21, 2020 at 12:55pm</span>
+      <span>Mar 21, 2020 at 3:29pm</span>
     </li>
   </ul>
 
@@ -122,6 +122,15 @@
             </li>
           </a>
           
+          <a href="Bundled modules.html">
+             
+              <li class='passed spec-name'>
+            
+              <span id="scenarioName" class="scenarioname">Bundled modules</span>
+              <span id="time" class="time">00:00:04</span>
+            </li>
+          </a>
+          
         </ul>
       </div>
     </aside>
@@ -137,7 +146,7 @@
         <div class="hidden report_test-results" alt="Scenarios" title="Scenarios">
           <ul>
             <li class="fail"><span class="value">0</span><span class="txt">Failed</span></li>
-            <li class="pass"><span class="value">4</span><span class="txt">Passed</span></li>
+            <li class="pass"><span class="value">6</span><span class="txt">Passed</span></li>
             <li class="skip"><span class="value">0</span><span class="txt">Skipped</span></li>
           </ul>
         </div>
@@ -449,9 +458,7 @@
   
     <span><p>After setting up, deploying a simple endpoint is not much more complicated than an old-school way of copying PHP files to an FTP server.</p>
 
-<p>But here, the file is gzipped before upload, and we use Google Cloud Storage instead of FTP.</p>
-
-<p>To upload files to GCS from a shell script, you can use the <a href="https://cloud.google.com/storage/docs/gsutil" rel="nofollow">gsutil</a> command.</p>
+<p>But here, the file must gzipped before uploading, Google Cloud Storage is used instead of FTP. To upload files to GCS from a shell script, you can use the <a href="https://cloud.google.com/storage/docs/gsutil" rel="nofollow">gsutil</a> command.</p>
 </span>
   
 
@@ -984,13 +991,7 @@
   
     
   
-    <span><p>One of the advantage of using evalaas is <strong>almost instant deploys.</strong></p>
-
-<p>When you upload a new file to Google Cloud Storage, the change takes effect <strong>immediately.</strong></p>
-
-<p>This is in contrast with some other serverless providers where you have to wait about 1 minute</p>
-
-<p>to get your code updated.</p>
+    <span><p>One of the advantage of using evalaas is <strong>almost instant deploys.</strong> When you upload a new file to Google Cloud Storage, the change takes effect <strong>immediately.</strong> This is in contrast with some other serverless providers where you have to wait about 1 minute to get your code updated.</p>
 
 <p>First, upload the 1st version:</p>
 </span>
@@ -1775,9 +1776,9 @@
   
     
   
-    <span><p>Since multiple endpoints are run on the same server, they all share the same system environment variables (<code>process.env</code>).</p>
+    <span><p>Since multiple endpoints may be run on the same Node.js process (unless you deploy multiple instances of evalaas), they all share the same set of system environment variables (<code>process.env</code>), so <code>process.env</code> cannot be customized per-endpoint.</p>
 
-<p>However, we still may want to give each endpoint a different configuration, but we might not want to hard-code them into the source code. You can upload a <code>.env</code> file next to the <code>.js.gz</code> file and it will be made available in the endpoint as <code>req.env</code>.</p>
+<p>However, we still may want to give each endpoint a different configuration, but we might not want to hard-code them into the source code or check them into source control. Alternatively, you can upload a <code>.env</code> file next to the <code>.js.gz</code> file, and it will be made available in the endpoint as <code>req.env</code>.</p>
 </span>
   
 
@@ -2749,6 +2750,1046 @@ yarn add --dev webpack webpack-cli &amp;&amp; yarn webpack
 
 <p></details></p>
 </span>
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+	
+	</div>
+
+      
+        
+	
+  <div class='scenario-container passed'>
+    
+
+	
+  <div class="scenario-head">
+    <h3 class="head borderBottom">Error handling</h3>
+    <span class="time">00:00:00</span>
+
+	
+  
+
+	</div>
+  
+  
+
+  
+  
+
+  
+  
+
+	
+
+  
+    <div class='context-step'>
+      
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        You have created the Google Cloud Storage bucket named 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`evalaas-test`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+    </div>
+  
+    <div class='context-step'>
+      
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        You have configured the environment variable 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`EVALAAS_STORAGE_BASE`"</span>
+    
+  
+    
+      <span>
+         to 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`gs://evalaas-test`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+    </div>
+  
+    <div class='context-step'>
+      
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        You have deployed evalaas to Google Cloud Run and made it accessible at 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`https://test.evalaas.dev`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+    </div>
+  
+  
+    
+  
+    <span><p>If your endpoint function <strong>throws</strong> or returns a <strong>rejected promise</strong>, evalaas will send a response of status 500.</p>
+</span>
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Compress and upload 
+      </span>
+    
+  
+    
+      <span class='parameter'>"[example-files/error-example.js](example-files/error-example.js)"</span>
+    
+  
+    
+      <span>
+         to 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`gs://evalaas-test/error-example.js.gz`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Make a GET request to 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`https://test.evalaas.dev/run/error-example`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        You should get a response with status code 
+      </span>
+    
+  
+    
+      <span class='parameter'>"500"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+	
+	</div>
+
+      
+        
+	
+  <div class='scenario-container passed'>
+    
+
+	
+  <div class="scenario-head">
+    <h3 class="head borderBottom">Make HTTP requests with `fetch()`</h3>
+    <span class="time">00:00:00</span>
+
+	
+  
+
+	</div>
+  
+  
+
+  
+  
+
+  
+  
+
+	
+
+  
+    <div class='context-step'>
+      
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        You have created the Google Cloud Storage bucket named 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`evalaas-test`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+    </div>
+  
+    <div class='context-step'>
+      
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        You have configured the environment variable 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`EVALAAS_STORAGE_BASE`"</span>
+    
+  
+    
+      <span>
+         to 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`gs://evalaas-test`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+    </div>
+  
+    <div class='context-step'>
+      
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        You have deployed evalaas to Google Cloud Run and made it accessible at 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`https://test.evalaas.dev`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+    </div>
+  
+  
+    
+  
+    <span><p>You can use <code>fetch()</code> to call other HTTP endpoints without installing any extra server.</p>
+</span>
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Compress and upload 
+      </span>
+    
+  
+    
+      <span class='parameter'>"[example-files/fetch-example.js](example-files/fetch-example.js)"</span>
+    
+  
+    
+      <span>
+         to 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`gs://evalaas-test/fetch-example.js.gz`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Make a GET request to 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`https://test.evalaas.dev/run/fetch-example`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        You should get the following JSON response: 
+      </span>
+    
+  
+    
+      <div class='inline-table'>
+        <div>
+          <table>
+  <tr>
+    <th>json response</th>
+  </tr>
+  <tbody>
+    
+    <tr><td>`{ &#34;dependenciesCount&#34;: 3 }`</td></tr>
+    
+  </tbody>
+</table>
+
+        </div>
+      </div>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
   
 
   
