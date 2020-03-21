@@ -9,6 +9,11 @@ Assuming that evalaas has been deployed to Google Cloud, and a Cloud Storage buc
 
 ## Deploy a JavaScript endpoint
 
+After setting up, deploying a simple endpoint is not much more complicated than an old-school way of copying PHP files to an FTP server.
+
+But here, the file is gzipped before upload, and we use Google Cloud Storage instead of FTP.
+To upload files to GCS from a shell script, you can use the [gsutil](https://cloud.google.com/storage/docs/gsutil) command.
+
 * Compress and upload "[example-files/hello.js](example-files/hello.js)" to "`gs://evalaas-test/hello.js.gz`"
 * Make a GET request to "`https://test.evalaas.dev/run/hello`"
 * You should get the following JSON response:
