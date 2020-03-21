@@ -138,3 +138,12 @@ Temporary Items
 
 # End of https://www.gitignore.io/api/osx,node
 .env
+
+# Gauge - metadata dir
+.gauge
+
+# Gauge - log files dir
+logs
+
+# Gauge - reports dir
+reports
