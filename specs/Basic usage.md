@@ -22,6 +22,33 @@ To upload files to GCS from a shell script, you can use the [gsutil](https://clo
   |------------------|
   | `{ "ok": 1 }`    |
 
+## Updating a JavaScript endpoint
+
+One of the advantage of using evalaas is **almost instant deploys.**
+When you upload a new file to Google Cloud Storage, the change takes effect **immediately.**
+This is in contrast with some other serverless providers where you have to wait about 1 minute
+to get your code updated.
+
+First, upload the 1st version:
+
+* Compress and upload "[example-files/hello.js](example-files/hello.js)" to "`gs://evalaas-test/hello.js.gz`"
+* Make a GET request to "`https://test.evalaas.dev/run/hello`"
+* You should get the following JSON response:
+
+  | json response    |
+  |------------------|
+  | `{ "ok": 1 }`    |
+
+Then, upload the 2nd version:
+
+* Compress and upload "[example-files/hello-v2.js](example-files/hello-v2.js)" to "`gs://evalaas-test/hello.js.gz`"
+* Make a GET request to "`https://test.evalaas.dev/run/hello`"
+* You should get the following JSON response:
+
+  | json response    |
+  |------------------|
+  | `{ "ok": "it is working!" }` |
+
 ## Environment variables
 
 Since multiple endpoints are run on the same server, they all share the same system environment variables (`process.env`).
