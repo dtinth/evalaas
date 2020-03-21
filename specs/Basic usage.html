@@ -1,0 +1,2504 @@
+
+	
+	
+  <!doctype html>
+  <html><head>
+    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+    <meta charset="utf-8" />
+    <title>Gauge Test Results</title>
+    <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="../css/open-sans.css">
+    <link rel="stylesheet" type="text/css" href="../css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="../css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+  </head>
+  <body>
+  <header class="top">
+    <div class="header">
+      <div class="container">
+        <div class="logo">
+          <a href=".."><img src="../images/gaugeLogo.png" alt="Report logo"></a>
+        </div>
+        <h2 class="project">Project: evalaas</h2>
+      </div>
+    </div>
+  </header>
+  <main class="main-container">
+  <div class="container">
+
+	
+  <div class="report-overview">
+   
+  <div class="report_chart">
+    <div class="chart">
+      <svg id="pie-chart" data-results="0,1,0" data-total="1">
+        <path class="status failed" />
+        <path class="shadow failed" data-status="failed"><title>Failed: 0/1</title></path>
+        <path class="status passed" />
+        <path class="shadow passed" data-status="passed"><title>Passed: 1/1</title></path>
+        <path class="status skipped" />
+        <path class="shadow skipped" data-status="skipped"><title>Skipped: 0/1</title></path>
+      </svg>
+    </div>
+  </div>
+
+   
+  <div class="report_test-results">
+    <div class="report_test-result specs">
+        <div class="total-specs" title="Filter all specs"><span class="txt">Total specs</span><span class="value">1</span></div>
+        <div class="fail spec-filter" data-status="failed" title="Filter failed specs"><span class="value">0</span></div>
+        <div class="pass spec-filter" data-status="passed" title="Filter passed specs"><span class="value">1</span></div>
+        <div class="skip spec-filter" data-status="skipped" title="Filter skipped specs"><span class="value">0</span></div>
+    </div>
+    <div class="report_test-result scenarios">
+        <div class="total-scenarios"><span class="txt">Total scenario</span><span class="value">4</span></div>
+        <div class="fail scenario-stats" data-status="failed"><span class="value">0</span></div>
+        <div class="pass scenario-stats" data-status="passed"><span class="value">4</span></div>
+        <div class="skip scenario-stats" data-status="skipped"><span class="value">0</span></div>
+    </div>
+  </div>
+
+    <div class="report_details">
+      
+  <ul>
+    <li>
+      <label>Environment </label>
+      <span>default</span>
+    </li>
+    
+    <li>
+      <label>Success Rate </label>
+      <span>100%</span>
+    </li>
+    <li>
+      <label>Total Time </label>
+      <span>00:00:00</span>
+    </li>
+    <li>
+      <label>Generated On </label>
+      <span>Mar 21, 2020 at 12:17pm</span>
+    </li>
+  </ul>
+
+      
+  
+
+      
+  
+  
+
+
+    </div>
+  </div>
+
+
+	
+
+	
+
+	
+		<div class="specifications">
+		
+  
+    <aside class="sidebar">
+      <h3 class="title">Specifications</h3>
+      <div class="searchbar">
+        <input id="searchSpecifications" placeholder="Type specification or tag name" type="text" />
+        <i class="fa fa-search"></i>
+      </div>
+      <div class='specs-sorting'>
+        <div class="sort sort-specs-name" data-sort-by="specs-name"><span class='sort-icons'><i class="fa fa-caret-up"></i><i class="fa fa-caret-down"></i></span><span>Name</span></div>
+        <div class="sort sort-execution-time" data-sort-by="execution-time"><span class='sort-icons'><i class="fa fa-caret-up"></i><i class="fa fa-caret-down"></i></span><span>Execution time</span></div>
+      </div>
+      <div id="listOfSpecifications">
+        <ul id="scenarios" class="spec-list">
+        
+          <a href="Basic usage.html">
+             
+              <li class='passed spec-name'>
+            
+              <span id="scenarioName" class="scenarioname">Basic usage</span>
+              <span id="time" class="time">00:00:00</span>
+            </li>
+          </a>
+          
+        </ul>
+      </div>
+    </aside>
+  
+
+		
+  
+	
+  <div id="specificationContainer" class="details">
+    <header class="curr-spec">
+      <div class="spec-head-wrapper">
+        <h3 class="spec-head" title="/home/runner/work/evalaas/evalaas/specs/Basic usage.md">Basic usage</h3>
+        <div class="hidden report_test-results" alt="Scenarios" title="Scenarios">
+          <ul>
+            <li class="fail"><span class="value">0</span><span class="txt">Failed</span></li>
+            <li class="pass"><span class="value">4</span><span class="txt">Passed</span></li>
+            <li class="skip"><span class="value">0</span><span class="txt">Skipped</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="spec-meta">
+        <div class="spec-filename">
+          <label for="specFileName">File Path</label>
+          <input id="specFileName" value="/home/runner/work/evalaas/evalaas/specs/Basic usage.md" readonly/>
+          <button class="clipboard-btn" data-clipboard-target="#specFileName" title="Copy to Clipboard">
+              <i class="fa fa-clipboard" aria-hidden="true" title="Copy to Clipboard"></i>
+          </button>
+        </div>
+        <span class="time">00:00:00</span>
+      </div>
+
+	
+  
+
+	</header>
+	<div id="specItemsContainer">
+	
+    
+  
+
+    
+    
+    
+
+    <div class="content">
+    
+  
+  <span><p><strong>evalaas</strong> is a serverless prototyping platform on top of <a href="https://cloud.google.com/run" rel="nofollow">Google Cloud Run</a> which encourages the Save and Refresh development cycle, giving rapid feedback when developing serverless endpoints.</p>
+
+<p>Assuming that evalaas has been deployed to Google Cloud, and a Cloud Storage bucket has been created, you first need to tell <strong>evalaas</strong> which GCS bucket to use.</p>
+</span>
+  
+  
+
+  
+
+      
+        
+	
+  <div class='scenario-container passed'>
+    
+
+	
+  <div class="scenario-head">
+    <h3 class="head borderBottom">Deploy a JavaScript endpoint</h3>
+    <span class="time">00:00:00</span>
+
+	
+  
+
+	</div>
+  
+  
+
+  
+  
+
+  
+  
+
+	
+
+  
+    <div class='context-step'>
+      
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Configure environment variable 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`EVALAAS_STORAGE_BASE`"</span>
+    
+  
+    
+      <span>
+         to 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`gs://evalaas-test`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+    </div>
+  
+    <div class='context-step'>
+      
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Deploy evalaas and make it accessible at 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`https://test.evalaas.dev`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+    </div>
+  
+  
+    
+  
+    <span><p>After setting up, deploying a simple endpoint is not much more complicated than an old-school way of copying PHP files to an FTP server.</p>
+
+<p>But here, the file is gzipped before upload, and we use Google Cloud Storage instead of FTP.</p>
+
+<p>To upload files to GCS from a shell script, you can use the <a href="https://cloud.google.com/storage/docs/gsutil" rel="nofollow">gsutil</a> command.</p>
+</span>
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Compress and upload 
+      </span>
+    
+  
+    
+      <span class='parameter'>"[example-files/hello.js](example-files/hello.js)"</span>
+    
+  
+    
+      <span>
+         to 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`gs://evalaas-test/hello.js.gz`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Make a GET request to 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`https://test.evalaas.dev/run/hello`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        You should get the following JSON response: 
+      </span>
+    
+  
+    
+      <div class='inline-table'>
+        <div>
+          <table>
+  <tr>
+    <th>json response</th>
+  </tr>
+  <tbody>
+    
+    <tr><td>`{ &#34;ok&#34;: 1 }`</td></tr>
+    
+  </tbody>
+</table>
+
+        </div>
+      </div>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+  
+    
+  
+    <span></span>
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+	
+	</div>
+
+      
+        
+	
+  <div class='scenario-container passed'>
+    
+
+	
+  <div class="scenario-head">
+    <h3 class="head borderBottom">Updating a JavaScript endpoint</h3>
+    <span class="time">00:00:00</span>
+
+	
+  
+
+	</div>
+  
+  
+
+  
+  
+
+  
+  
+
+	
+
+  
+    <div class='context-step'>
+      
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Configure environment variable 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`EVALAAS_STORAGE_BASE`"</span>
+    
+  
+    
+      <span>
+         to 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`gs://evalaas-test`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+    </div>
+  
+    <div class='context-step'>
+      
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Deploy evalaas and make it accessible at 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`https://test.evalaas.dev`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+    </div>
+  
+  
+    
+  
+    <span><p>One of the advantage of using evalaas is <strong>almost instant deploys.</strong></p>
+
+<p>When you upload a new file to Google Cloud Storage, the change takes effect <strong>immediately.</strong></p>
+
+<p>This is in contrast with some other serverless providers where you have to wait about 1 minute</p>
+
+<p>to get your code updated.</p>
+
+<p>First, upload the 1st version:</p>
+</span>
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Compress and upload 
+      </span>
+    
+  
+    
+      <span class='parameter'>"[example-files/hello.js](example-files/hello.js)"</span>
+    
+  
+    
+      <span>
+         to 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`gs://evalaas-test/hello.js.gz`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Make a GET request to 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`https://test.evalaas.dev/run/hello`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        You should get the following JSON response: 
+      </span>
+    
+  
+    
+      <div class='inline-table'>
+        <div>
+          <table>
+  <tr>
+    <th>json response</th>
+  </tr>
+  <tbody>
+    
+    <tr><td>`{ &#34;ok&#34;: 1 }`</td></tr>
+    
+  </tbody>
+</table>
+
+        </div>
+      </div>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+  
+    
+  
+    <span><p>Then, upload the 2nd version:</p>
+</span>
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Compress and upload 
+      </span>
+    
+  
+    
+      <span class='parameter'>"[example-files/hello-v2.js](example-files/hello-v2.js)"</span>
+    
+  
+    
+      <span>
+         to 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`gs://evalaas-test/hello.js.gz`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Make a GET request to 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`https://test.evalaas.dev/run/hello`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        You should get the following JSON response: 
+      </span>
+    
+  
+    
+      <div class='inline-table'>
+        <div>
+          <table>
+  <tr>
+    <th>json response</th>
+  </tr>
+  <tbody>
+    
+    <tr><td>`{ &#34;ok&#34;: &#34;it is working!&#34; }`</td></tr>
+    
+  </tbody>
+</table>
+
+        </div>
+      </div>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+  
+    
+  
+    <span></span>
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+	
+	</div>
+
+      
+        
+	
+  <div class='scenario-container passed'>
+    
+
+	
+  <div class="scenario-head">
+    <h3 class="head borderBottom">Environment variables</h3>
+    <span class="time">00:00:00</span>
+
+	
+  
+
+	</div>
+  
+  
+
+  
+  
+
+  
+  
+
+	
+
+  
+    <div class='context-step'>
+      
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Configure environment variable 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`EVALAAS_STORAGE_BASE`"</span>
+    
+  
+    
+      <span>
+         to 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`gs://evalaas-test`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+    </div>
+  
+    <div class='context-step'>
+      
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Deploy evalaas and make it accessible at 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`https://test.evalaas.dev`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+    </div>
+  
+  
+    
+  
+    <span><p>Since multiple endpoints are run on the same server, they all share the same system environment variables (<code>process.env</code>).</p>
+
+<p>However, we still may want to give each endpoint a different configuration, but we might not want to hard-code them into the source code. You can upload a <code>.env</code> file next to the <code>.js.gz</code> file and it will be made available in the endpoint as <code>req.env</code>.</p>
+</span>
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Compress and upload 
+      </span>
+    
+  
+    
+      <span class='parameter'>"[example-files/env-example.js](example-files/env-example.js)"</span>
+    
+  
+    
+      <span>
+         to 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`gs://evalaas-test/env-example.js.gz`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Upload a file to 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`gs://evalaas-test/env-example.env`"</span>
+    
+  
+    
+      <span>
+         with the following contents 
+      </span>
+    
+  
+    
+      <div class='inline-table'>
+        <div>
+          <table>
+  <tr>
+    <th>`env-example.env`</th>
+  </tr>
+  <tbody>
+    
+    <tr><td># this is a comment</td></tr>
+    
+    <tr><td>A=hello</td></tr>
+    
+    <tr><td>B=&#34;world&#34;</td></tr>
+    
+  </tbody>
+</table>
+
+        </div>
+      </div>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+  
+    
+  
+    <span></span>
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Make a GET request to 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`https://test.evalaas.dev/run/env-example`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        You should get the following JSON response: 
+      </span>
+    
+  
+    
+      <div class='inline-table'>
+        <div>
+          <table>
+  <tr>
+    <th>json response</th>
+  </tr>
+  <tbody>
+    
+    <tr><td>`{ &#34;env&#34;: { &#34;A&#34;: &#34;hello&#34;, &#34;B&#34;: &#34;world&#34; } }`</td></tr>
+    
+  </tbody>
+</table>
+
+        </div>
+      </div>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+  
+    
+  
+    <span></span>
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+	
+	</div>
+
+      
+        
+	
+  <div class='scenario-container passed'>
+    
+
+	
+  <div class="scenario-head">
+    <h3 class="head borderBottom">Source map support</h3>
+    <span class="time">00:00:00</span>
+
+	
+  
+
+	</div>
+  
+  
+
+  
+  
+
+  
+  
+
+	
+
+  
+    <div class='context-step'>
+      
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Configure environment variable 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`EVALAAS_STORAGE_BASE`"</span>
+    
+  
+    
+      <span>
+         to 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`gs://evalaas-test`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+    </div>
+  
+    <div class='context-step'>
+      
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Deploy evalaas and make it accessible at 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`https://test.evalaas.dev`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+    </div>
+  
+  
+    
+  
+    <span><p>To make compiled endpoints easy to debug, evalaas supports <strong>inline source maps</strong>.</p>
+</span>
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Compress and upload 
+      </span>
+    
+  
+    
+      <span class='parameter'>"[example-files/source-map-example.js](example-files/source-map-example.js)"</span>
+    
+  
+    
+      <span>
+         to 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`gs://evalaas-test/source-map-example.js.gz`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        Make a GET request to 
+      </span>
+    
+  
+    
+      <span class='parameter'>"`https://test.evalaas.dev/run/source-map-example`"</span>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+  
+    
+  
+    
+  
+  <div class='step'>
+  
+  
+    <h5 class='execution-time'>
+      <span class='time'>Execution Time : 00:00:00</span>
+    </h5>
+  
+  <div class='step-info passed'>
+  
+  <ul>
+    <li class='step'>
+      <div class='step-txt'>
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+    
+      <span>
+        You should find these strings in the response: 
+      </span>
+    
+  
+    
+      <div class='inline-table'>
+        <div>
+          <table>
+  <tr>
+    <th>text to find</th>
+  </tr>
+  <tbody>
+    
+    <tr><td>`src/f.js`</td></tr>
+    
+    <tr><td>`src/index.js`</td></tr>
+    
+  </tbody>
+</table>
+
+        </div>
+      </div>
+    
+  
+  </div>
+
+  
+    
+    
+  
+
+    
+  
+
+    
+  
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+	</li></ul></div></div>
+  
+    
+  
+
+  
+
+  
+    
+  
+    <span><p><details></p>
+
+<p><summary>How to generate the example file</summary></p>
+
+<p>You can use webpack to generate <a href="example-files/source-map-example.js" rel="nofollow">example-files/source-map-example.js</a> with these files:</p>
+
+<p><code>src/index.js</code>:</p>
+
+<pre><code>
+import f from &#39;./f&#39;
+
+
+
+
+export default (req, res) =&gt; {
+
+  res.json({ stack: f() })
+
+}
+
+</code></pre>
+
+<p><code>src/f.js</code>:</p>
+
+<pre><code>
+export default function foo() {
+
+  return bar()
+
+}
+
+
+
+
+function bar() {
+
+  return new Error(&#39;test source map&#39;).stack
+
+}
+
+</code></pre>
+
+<p><code>webpack.config.js</code>:</p>
+
+<pre><code>
+module.exports = {
+
+  entry: &#39;./src/index.js&#39;,
+
+  devtool: &#39;inline-source-map&#39;,
+
+  target: &#39;node&#39;,
+
+  mode: &#39;production&#39;,
+
+  output: {
+
+    path: `${__dirname/dist}`,
+
+    filename: &#39;source-map-example.js&#39;,
+
+    library: &#39;endpoint&#39;,
+
+    libraryTarget: &#39;umd&#39;,
+
+  },
+
+}
+
+</code></pre>
+
+<p>Then run:</p>
+
+<pre><code>
+yarn add --dev webpack webpack-cli &amp;&amp; yarn webpack
+
+</code></pre>
+
+<p></details></p>
+</span>
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+	
+	</div>
+
+      
+
+    </div>
+    </div>
+
+    
+  
+
+    
+    
+    
+    </div>
+  
+
+		</div>
+	
+
+ 	</div>
+	</main>
+	
+  <footer class="footer">
+    <div class="container">
+      <p>Generated by Gauge HTML Report</p>
+    </div>
+  </footer>
+
+	
+    <script type="text/javascript">
+      var loadingImage = "../images/loading.gif";
+      var closeButton = "../images/close.gif";
+    </script>
+    <script src="../js/lightbox.js"></script>
+    <script src="../js/jquery-3.1.0.min.js" type="text/javascript"></script>
+    <script src="../js/auto-complete.min.js" type="text/javascript"></script>
+    <script src="../js/clipboard.min.js" type="text/javascript"></script>
+    <script src="../js/search_index.js" type="text/javascript"></script>
+    <script src="../js/main.js" type="text/javascript"></script>
+    </body>
+  </html>
+
