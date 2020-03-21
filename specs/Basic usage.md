@@ -11,7 +11,7 @@ Assuming that evalaas has been deployed to Google Cloud, and a Cloud Storage buc
 
 * Compress and upload "[example-files/hello.js](example-files/hello.js)" to "`gs://evalaas-test/hello.js.gz`"
 * Make a GET request to "`https://test.evalaas.dev/run/hello`"
-* You should get a JSON response
+* You should get the following JSON response:
 
   | json response    |
   |------------------|
@@ -33,9 +33,19 @@ However, we still may want to give each endpoint a different configuration, but 
   | B="world" |
 
 * Make a GET request to "`https://test.evalaas.dev/run/env-example`"
-* You should get a JSON response
+* You should get the following JSON response:
 
   | json response |
   | --- |
   | `{ "env": { "A": "hello", "B": "world" } }` |
 
+## Source map support
+
+* Compress and upload "[example-files/source-map-example.js](example-files/source-map-example.js)" to "`gs://evalaas-test/source-map-example.js.gz`"
+* Make a GET request to "`https://test.evalaas.dev/run/source-map-example`"
+* You should find these strings in the response:
+
+  | text to find |
+  |------------------|
+  | `src/f.js` |
+  | `src/index.js` |

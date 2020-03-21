@@ -51,11 +51,22 @@ step('Make a GET request to <url>', async function(url) {
   await ensureServerInitialized()
   state.latestResponse = await fetch(replaceUrl(parseCode(url)))
 })
-step('You should get a JSON response <table>', async function(table) {
+step('You should get the following JSON response: <table>', async function(
+  table,
+) {
   const expectedJson = parseCode(table.rows[0].cells[0])
   const expected = JSON.parse(expectedJson)
   const actual = await state.latestResponse.json()
   expect(actual).toEqual(expected)
+})
+step('You should find these strings in the response: <table>', async function(
+  table,
+) {
+  const actual = await state.latestResponse.text()
+  for (const row of table.rows) {
+    const expected = parseCode(row.cells[0])
+    expect(actual).toContain(expected)
+  }
 })
 
 async function ensureServerInitialized() {
