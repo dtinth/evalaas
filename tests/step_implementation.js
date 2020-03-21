@@ -1,7 +1,13 @@
-const state = {
-  endpoint: '',
-  env: {},
-}
+let state
+
+beforeSpec(async () => {
+  state = {
+    endpoint: '',
+    env: {
+      EVALAAS_STORAGE_BASE: 'gs://test-evalaas-default',
+    },
+  }
+})
 
 const fs = require('fs')
 const zlib = require('zlib')
@@ -15,7 +21,10 @@ const pTimeout = require('p-timeout')
 
 const parseCode = text => text.replace(/^`([^]*)`$/, '$1')
 const parseLink = text => text.replace(/^\[([^]*)\]\([^]*\)/, '$1')
-const replaceUrl = url => url.replace(state.endpoint, 'http://localhost:3741')
+const replaceUrl = url =>
+  url
+    .replace(state.endpoint, 'http://localhost:3741')
+    .replace(/^\//, 'http://localhost:3741/')
 const tableToFileContents = table => {
   return Buffer.from(table.rows.map(row => parseCode(row.cells[0])).join('\n'))
 }
@@ -49,6 +58,13 @@ step(
 step('Compress and upload <file> to <uri>', async function(file, uri) {
   const buffer = zlib.gzipSync(fs.readFileSync(`specs/${parseLink(file)}`))
   fakeUpload(parseCode(uri), buffer)
+})
+step('Deploy <file> to evalaas', async function(file) {
+  const buffer = zlib.gzipSync(fs.readFileSync(`specs/${parseLink(file)}`))
+  fakeUpload(
+    'gs://test-evalaas-default/' + path.basename(parseLink(file)) + '.gz',
+    buffer,
+  )
 })
 step(
   'Upload a file to <uri> with the following contents <table>',
