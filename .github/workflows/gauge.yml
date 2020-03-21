@@ -22,10 +22,11 @@ jobs:
         env:
           CI: true
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@b2acf87217804533f885c5fa03e1f03d2a99cb20
+        uses: JamesIves/github-pages-deploy-action@e0c5ab92a572c0a97d95564c9bd1d7c131623ff1
         if: "github.ref == 'refs/heads/master'"
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
           FOLDER: reports/html-report
-
+          GIT_CONFIG_NAME: dtinth-bot
+          GIT_CONFIG_EMAIL: dtinth-bot@users.noreply.github.com
