@@ -2,7 +2,7 @@
 
 Personal serverless prototyping platform on top of [Google Cloud Run](https://cloud.google.com/run).
 
-Check out [the **basic usage** example](./specs/Basic usage.md) which also serves as an **executable specification**, [continuously tested on GitHub Actions](https://github.com/dtinth/evalaas/actions) using [Gauge](https://gauge.org/).
+Check out [the **basic usage** example](<./specs/Basic usage.md>) which also serves as an **executable specification**, [continuously tested on GitHub Actions](https://github.com/dtinth/evalaas/actions) using [Gauge](https://gauge.org/).
 
 **Use case:**
 
