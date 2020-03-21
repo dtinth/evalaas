@@ -17,3 +17,25 @@ Assuming that evalaas has been deployed to Google Cloud, and a Cloud Storage buc
   |------------------|
   | `{ "ok": 1 }`    |
 
+## Environment variables
+
+Since multiple endpoints are run on the same server, they all share the same system environment variables (`process.env`).
+
+However, we still may want to give each endpoint a different configuration, but we might not want to hard-code them into the source code. You can upload a `.env` file next to the `.js.gz` file and it will be made available in the endpoint as `req.env`.
+
+* Compress and upload "[example-files/env-example.js](example-files/env-example.js)" to "`gs://evalaas-test/env-example.js.gz`"
+* Upload a file to "`gs://evalaas-test/env-example.env`" with the following contents
+
+  | `env-example.env` |
+  | --- |
+  | # this is a comment |
+  | A=hello |
+  | B="world" |
+
+* Make a GET request to "`https://test.evalaas.dev/run/env-example`"
+* You should get a JSON response
+
+  | json response |
+  | --- |
+  | `{ "env": { "A": "hello", "B": "world" } }` |
+
