@@ -61,12 +61,22 @@ step('Make a GET request to <url>', async function(url) {
   await ensureServerInitialized()
   state.latestResponse = await fetch(replaceUrl(parseCode(url)))
 })
+step('You should get a response with status code <code>', async function(code) {
+  expect(state.latestResponse.status).toEqual(+code)
+})
 step('You should get the following JSON response: <table>', async function(
   table,
 ) {
   const expectedJson = parseCode(table.rows[0].cells[0])
   const expected = JSON.parse(expectedJson)
-  const actual = await state.latestResponse.json()
+  const actual = await state.latestResponse
+    .clone()
+    .json()
+    .catch(async e => {
+      e.message +=
+        '\n\nReceived response:\n' + (await state.latestResponse.text())
+      throw e
+    })
   expect(actual).toEqual(expected)
 })
 step('You should find these strings in the response: <table>', async function(

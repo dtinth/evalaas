@@ -134,3 +134,23 @@ yarn add --dev webpack webpack-cli && yarn webpack
 ```
 
 </details>
+
+## Error handling
+
+If your endpoint function **throws** or returns a **rejected promise**, evalaas will send a response of status 500.
+
+* Compress and upload "[example-files/error-example.js](example-files/error-example.js)" to "`gs://evalaas-test/error-example.js.gz`"
+* Make a GET request to "`https://test.evalaas.dev/run/error-example`"
+* You should get a response with status code "500"
+
+## Make HTTP requests with `fetch()`
+
+You can use `fetch()` to call other HTTP endpoints without installing any extra server.
+
+* Compress and upload "[example-files/fetch-example.js](example-files/fetch-example.js)" to "`gs://evalaas-test/fetch-example.js.gz`"
+* Make a GET request to "`https://test.evalaas.dev/run/fetch-example`"
+* You should get the following JSON response:
+
+  | json response |
+  | --- |
+  | `{ "dependenciesCount": 3 }` |

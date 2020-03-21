@@ -1,6 +1,8 @@
 // @ts-check
 /// <reference path="./types.d.ts" />
 
+require('isomorphic-fetch')
+
 const express = require('express')
 const dotenv = require('dotenv')
 const crypto = require('crypto')
@@ -80,7 +82,7 @@ app.use(async (req, res, next) => {
     }
     req.url = req.url.slice(match[0].replace(/\/$/, '').length) || '/'
     req.env = await envPromise
-    ;(cachedModule.module.exports.default || cachedModule.module.exports)(
+    await (cachedModule.module.exports.default || cachedModule.module.exports)(
       req,
       res,
     )
