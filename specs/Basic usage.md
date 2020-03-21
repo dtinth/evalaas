@@ -41,6 +41,8 @@ However, we still may want to give each endpoint a different configuration, but 
 
 ## Source map support
 
+To make compiled endpoints easy to debug, evalaas supports **inline source maps**.
+
 * Compress and upload "[example-files/source-map-example.js](example-files/source-map-example.js)" to "`gs://evalaas-test/source-map-example.js.gz`"
 * Make a GET request to "`https://test.evalaas.dev/run/source-map-example`"
 * You should find these strings in the response:
@@ -49,3 +51,56 @@ However, we still may want to give each endpoint a different configuration, but 
   |------------------|
   | `src/f.js` |
   | `src/index.js` |
+
+
+<details>
+<summary>How to generate the example file</summary>
+
+You can use webpack to generate [example-files/source-map-example.js](example-files/source-map-example.js) with these files:
+
+`src/index.js`:
+
+```js
+import f from './f'
+
+export default (req, res) => {
+  res.json({ stack: f() })
+}
+```
+
+`src/f.js`:
+
+```js
+export default function foo() {
+  return bar()
+}
+
+function bar() {
+  return new Error('test source map').stack
+}
+```
+
+`webpack.config.js`:
+
+```js
+module.exports = {
+  entry: './src/index.js',
+  devtool: 'inline-source-map',
+  target: 'node',
+  mode: 'production',
+  output: {
+    path: `${__dirname/dist}`,
+    filename: 'source-map-example.js',
+    library: 'endpoint',
+    libraryTarget: 'umd',
+  },
+}
+```
+
+Then run:
+
+```
+yarn add --dev webpack webpack-cli && yarn webpack
+```
+
+</details>
