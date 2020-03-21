@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "gauge run specs"
   },
   "dependencies": {
     "@google-cloud/storage": "^4.6.0",
