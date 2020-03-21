@@ -26,19 +26,26 @@ const fakeUpload = (uri, buffer) => {
   fs.writeFileSync(fakeStorageFilePath, buffer)
 }
 
-step('Configure environment variable <name> to <value>', async function(
-  name,
-  value,
-) {
-  // Assume that environment has already been set.
-  state.env[parseCode(name)] = parseCode(value)
-})
-step('Deploy evalaas and make it accessible at <endpoint>', async function(
-  endpoint,
-) {
-  // Assume that evalaas is already deployed.
-  state.endpoint = parseCode(endpoint)
-})
+step(
+  'You have created the Google Cloud Storage bucket named <bucket>',
+  async function() {
+    // No-op, the fake folder will be created on upload step
+  },
+)
+step(
+  'You have configured the environment variable <name> to <value>',
+  async function(name, value) {
+    state.env[parseCode(name)] = parseCode(value)
+  },
+)
+step(
+  'You have deployed evalaas to Google Cloud Run and made it accessible at <endpoint>',
+  async function(endpoint) {
+    state.endpoint = parseCode(endpoint)
+    await ensureServerInitialized()
+  },
+)
+
 step('Compress and upload <file> to <uri>', async function(file, uri) {
   const buffer = zlib.gzipSync(fs.readFileSync(`specs/${parseLink(file)}`))
   fakeUpload(parseCode(uri), buffer)

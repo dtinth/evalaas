@@ -2,10 +2,13 @@
 
 **evalaas** is a serverless prototyping platform on top of [Google Cloud Run](https://cloud.google.com/run) which encourages the Save and Refresh development cycle, giving rapid feedback when developing serverless endpoints.
 
-Assuming that evalaas has been deployed to Google Cloud, and a Cloud Storage bucket has been created, you first need to tell **evalaas** which GCS bucket to use.
+> **This file is an executable specification.** The steps in this tutorial is [continuously tested on GitHub Actions](https://github.com/dtinth/evalaas/actions) using [Gauge](https://gauge.org/). You can [view the latest test result here](https://dtinth.github.io/evalaas/specs/Basic%20usage.html).
 
-* Configure environment variable "`EVALAAS_STORAGE_BASE`" to "`gs://evalaas-test`"
-* Deploy evalaas and make it accessible at "`https://test.evalaas.dev`"
+This guide assumes that evalaas is already deployed.
+
+* You have created the Google Cloud Storage bucket named "`evalaas-test`"
+* You have configured the environment variable "`EVALAAS_STORAGE_BASE`" to "`gs://evalaas-test`"
+* You have deployed evalaas to Google Cloud Run and made it accessible at "`https://test.evalaas.dev`"
 
 ## Deploy a JavaScript endpoint
 

@@ -2,7 +2,7 @@
 
 Personal serverless prototyping platform on top of [Google Cloud Run](https://cloud.google.com/run).
 
-Check out [the **basic usage** example](<./specs/Basic usage.md>) which also serves as an **executable specification**, [continuously tested on GitHub Actions](https://github.com/dtinth/evalaas/actions) using [Gauge](https://gauge.org/).
+Check out [the **basic usage** example](<./specs/Basic usage.md>) which also serves as an **executable specification**, [continuously tested on GitHub Actions](https://github.com/dtinth/evalaas/actions) using [Gauge](https://gauge.org/). You can [view the latest test result here](https://dtinth.github.io/evalaas/specs/Basic%20usage.html).
 
 **Use case:**
 
@@ -44,6 +44,8 @@ Check out [the **basic usage** example](<./specs/Basic usage.md>) which also ser
   that means you can give your code access to native modules by listing them in `package.json`.
   For example, `puppeteer` and `@google-cloud/vision` is listed inside this project’s `package.json` although it is not used here because some of my projects may use it.
 
+## Deployment
+
 **Building the image on the cloud:**
 
 ```
@@ -61,15 +63,20 @@ gcloud run deploy evalaas \
   --max-instances=1
 ```
 
+The first run will fail. Go to Cloud Run console and set up the environment variable.
+
 **Environment variable config:**
 
 - `EVALAAS_STORAGE_BASE` The Google Cloud Storage URL that hosts the code files, such as `gs://my-bucket`
+
+## Synopsis
 
 **Deploying code to run on evalaas:**
 
 1. Create a file that exports an HTTP handler, like this:
 
    ```js
+   // example.js
    module.exports = (req, res) => {
      const name = process.env.HELLO_TARGET || 'world'
      res.json({ message: 'hello, ' + name })
@@ -91,7 +98,7 @@ gcloud run deploy evalaas \
 Your code must reside in a single file.
 You can use [@zeit/ncc](https://github.com/zeit/ncc) to compile code into a single `.js` file.
 
-**Adding in secrets:**
+**Adding in environment variables:**
 
 Copy your `.env` file to the bucket:
 
@@ -101,6 +108,8 @@ echo 'HELLO_TARGET=evalaas' | gsutil cp - gs://dtinth-automatron-evalaas/evalaas
 
 The secrets are now available in `req.env`.
 
-**Name:** This project is taking a JavaScript `eval` function and exposing as a service.
+## Name
+
+This project is taking a JavaScript `eval` function and exposing as a service.
 So the name comes from `eval` + aaS (-as-a-Service).
 You can pronounce it like “everlast” because I have less fear that Google Cloud will sunset anytime soon.
