@@ -1,3 +1,6 @@
+// @ts-check
+/// <reference path="./types.d.ts" />
+
 const express = require('express')
 const dotenv = require('dotenv')
 const crypto = require('crypto')
@@ -6,17 +9,27 @@ const fs = require('fs')
 const vm = require('vm')
 const app = express()
 const { Storage } = require('@google-cloud/storage')
-const storage = new Storage()
+
+/**
+ * @type {Evalaas.Storage}
+ */
+const storage = process.env.EVALAAS_FAKE_STORAGE_DIR
+  ? createFakeStorage(process.env.EVALAAS_FAKE_STORAGE_DIR)
+  : new Storage()
 
 const EVALAAS_STORAGE_BASE = process.env.EVALAAS_STORAGE_BASE
-const [, storageBucket, storageKeyPrefix = '/'] = EVALAAS_STORAGE_BASE.match(
-  /^gs:\/\/([^/]+)(\/.*)?$/,
+if (!EVALAAS_STORAGE_BASE) {
+  throw new Error('Missing environment variable EVALAAS_STORAGE_BASE')
+}
+const [, storageBucket, storageKeyPrefix = '/'] = Array.from(
+  EVALAAS_STORAGE_BASE.match(/^gs:\/\/([^/]+)(\/.*)?$/) || [],
 )
 
 if (fs.existsSync('.env')) {
   dotenv.config()
 }
 
+/** @type {Evalaas.ModuleCache} */
 const moduleCache = {}
 
 app.use(async (req, res, next) => {
@@ -76,6 +89,11 @@ app.use(async (req, res, next) => {
   }
 })
 
+/**
+ * @param {string} filename
+ * @param {string} hash
+ * @param {string} source
+ */
 function loadModule(filename, hash, source) {
   const newModule = { exports: {} }
   const fn = vm.compileFunction(
@@ -88,6 +106,9 @@ function loadModule(filename, hash, source) {
 }
 
 require('source-map-support').install({
+  /**
+   * @returns {any}
+   */
   retrieveFile: function(path) {
     const match = path.match(/^\/evalaas\/([^/]+)\/(\w+)\.js$/)
     if (!match) {
@@ -104,6 +125,26 @@ require('source-map-support').install({
     return cachedModule.source
   },
 })
+
+/**
+ * @param {string} baseDir
+ * @returns {Evalaas.Storage}
+ */
+function createFakeStorage(baseDir) {
+  return {
+    bucket(bucketName) {
+      return {
+        file(key) {
+          return {
+            async download() {
+              return [fs.readFileSync(`${baseDir}/${bucketName}/${key}`)]
+            },
+          }
+        },
+      }
+    },
+  }
+}
 
 const port = process.env.PORT || 8080
 app.listen(port, () => {
