@@ -14,8 +14,7 @@ This guide assumes that evalaas is already deployed.
 
 After setting up, deploying a simple endpoint is not much more complicated than an old-school way of copying PHP files to an FTP server.
 
-But here, the file is gzipped before upload, and we use Google Cloud Storage instead of FTP.
-To upload files to GCS from a shell script, you can use the [gsutil](https://cloud.google.com/storage/docs/gsutil) command.
+But here, the file must gzipped before uploading, Google Cloud Storage is used instead of FTP. To upload files to GCS from a shell script, you can use the [gsutil](https://cloud.google.com/storage/docs/gsutil) command.
 
 * Compress and upload "[example-files/hello.js](example-files/hello.js)" to "`gs://evalaas-test/hello.js.gz`"
 * Make a GET request to "`https://test.evalaas.dev/run/hello`"
@@ -27,10 +26,7 @@ To upload files to GCS from a shell script, you can use the [gsutil](https://clo
 
 ## Updating a JavaScript endpoint
 
-One of the advantage of using evalaas is **almost instant deploys.**
-When you upload a new file to Google Cloud Storage, the change takes effect **immediately.**
-This is in contrast with some other serverless providers where you have to wait about 1 minute
-to get your code updated.
+One of the advantage of using evalaas is **almost instant deploys.** When you upload a new file to Google Cloud Storage, the change takes effect **immediately.** This is in contrast with some other serverless providers where you have to wait about 1 minute to get your code updated.
 
 First, upload the 1st version:
 
@@ -54,9 +50,9 @@ Then, upload the 2nd version:
 
 ## Environment variables
 
-Since multiple endpoints are run on the same server, they all share the same system environment variables (`process.env`).
+Since multiple endpoints may be run on the same Node.js process (unless you deploy multiple instances of evalaas), they all share the same set of system environment variables (`process.env`), so `process.env` cannot be customized per-endpoint.
 
-However, we still may want to give each endpoint a different configuration, but we might not want to hard-code them into the source code. You can upload a `.env` file next to the `.js.gz` file and it will be made available in the endpoint as `req.env`.
+However, we still may want to give each endpoint a different configuration, but we might not want to hard-code them into the source code or check them into source control. Alternatively, you can upload a `.env` file next to the `.js.gz` file, and it will be made available in the endpoint as `req.env`.
 
 * Compress and upload "[example-files/env-example.js](example-files/env-example.js)" to "`gs://evalaas-test/env-example.js.gz`"
 * Upload a file to "`gs://evalaas-test/env-example.env`" with the following contents
@@ -86,7 +82,6 @@ To make compiled endpoints easy to debug, evalaas supports **inline source maps*
   |------------------|
   | `src/f.js` |
   | `src/index.js` |
-
 
 <details>
 <summary>How to generate the example file</summary>
