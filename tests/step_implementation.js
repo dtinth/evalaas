@@ -26,7 +26,10 @@ const fakeUpload = (uri, buffer) => {
   fs.writeFileSync(fakeStorageFilePath, buffer)
 }
 
-step('Set environment variable <name> to <value>', async function(name, value) {
+step('Configure environment variable <name> to <value>', async function(
+  name,
+  value,
+) {
   // Assume that environment has already been set.
   state.env[parseCode(name)] = parseCode(value)
 })

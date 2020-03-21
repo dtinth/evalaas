@@ -4,7 +4,7 @@
 
 Assuming that evalaas has been deployed to Google Cloud, and a Cloud Storage bucket has been created, you first need to tell **evalaas** which GCS bucket to use.
 
-* Set environment variable "`EVALAAS_STORAGE_BASE`" to "`gs://evalaas-test`"
+* Configure environment variable "`EVALAAS_STORAGE_BASE`" to "`gs://evalaas-test`"
 * Deploy evalaas and make it accessible at "`https://test.evalaas.dev`"
 
 ## Deploy a JavaScript endpoint
