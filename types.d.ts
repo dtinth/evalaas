@@ -13,4 +13,14 @@ module Evalaas {
       exports: any
     }
   }
+
+  type Storage = {
+    bucket: (bucketName: string) => Bucket
+  }
+  type Bucket = {
+    file: (key: string) => File
+  }
+  type File = {
+    download: () => Promise<[Buffer]>
+  }
 }

@@ -1,13 +1,15 @@
-const fetch = require('node-fetch')
 const state = {
   endpoint: '',
   env: {},
 }
 
-const execa = require('execa')
-const zlib = require('zlib')
 const fs = require('fs')
+const zlib = require('zlib')
+const path = require('path')
+const execa = require('execa')
 const expect = require('expect')
+const mkdirp = require('mkdirp')
+const fetch = require('node-fetch')
 const pTimeout = require('p-timeout')
 
 const parseCode = text => text.replace(/^`([^]*)`$/, '$1')
@@ -26,11 +28,10 @@ step('Deploy evalaas and make it accessible at <endpoint>', async function(
 })
 step('Compress and upload <file> to <uri>', async function(file, uri) {
   const buffer = zlib.gzipSync(fs.readFileSync(`specs/${parseLink(file)}`))
-  await execa('gsutil', ['cp', '-', parseCode(uri)], {
-    input: buffer,
-    stdout: 'inherit',
-    stderr: 'inherit',
-  })
+  const [, bucket, key] = parseCode(uri).match(/^gs:\/\/([^/]+)\/([^]*)$/)
+  const fakeStorageFilePath = `tmp/fake-storage/${bucket}/${key}`
+  mkdirp.sync(path.dirname(fakeStorageFilePath))
+  fs.writeFileSync(fakeStorageFilePath, buffer)
 })
 step('Make a GET request to <url>', async function(url) {
   await ensureServerInitialized()
@@ -47,11 +48,12 @@ async function ensureServerInitialized() {
   if (!state.server) {
     state.server = execa('node', ['server.js'], {
       env: Object.assign({}, state.env, {
-        PORT: 3741,
+        PORT: '3741',
+        EVALAAS_FAKE_STORAGE_DIR: 'tmp/fake-storage',
       }),
-      stdout: 'inherit',
-      stderr: 'inherit',
     })
+    state.server.stdout.pipe(fs.createWriteStream('logs/server.log'))
+    state.server.stderr.pipe(fs.createWriteStream('logs/server.err'))
     const giveUpTime = Date.now() + 10e3
     let latestError
     for (;;) {
@@ -61,7 +63,6 @@ async function ensureServerInitialized() {
       }
       try {
         await pTimeout(fetch('http://localhost:3741'), 3e3)
-        console.log('Server is ready!')
         return
       } catch (error) {
         latestError = error

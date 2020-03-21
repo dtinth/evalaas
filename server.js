@@ -9,7 +9,13 @@ const fs = require('fs')
 const vm = require('vm')
 const app = express()
 const { Storage } = require('@google-cloud/storage')
-const storage = new Storage()
+
+/**
+ * @type {Evalaas.Storage}
+ */
+const storage = process.env.EVALAAS_FAKE_STORAGE_DIR
+  ? createFakeStorage(process.env.EVALAAS_FAKE_STORAGE_DIR)
+  : new Storage()
 
 const EVALAAS_STORAGE_BASE = process.env.EVALAAS_STORAGE_BASE
 if (!EVALAAS_STORAGE_BASE) {
@@ -100,7 +106,9 @@ function loadModule(filename, hash, source) {
 }
 
 require('source-map-support').install({
-  // @ts-ignore
+  /**
+   * @returns {any}
+   */
   retrieveFile: function(path) {
     const match = path.match(/^\/evalaas\/([^/]+)\/(\w+)\.js$/)
     if (!match) {
@@ -117,6 +125,26 @@ require('source-map-support').install({
     return cachedModule.source
   },
 })
+
+/**
+ * @param {string} baseDir
+ * @returns {Evalaas.Storage}
+ */
+function createFakeStorage(baseDir) {
+  return {
+    bucket(bucketName) {
+      return {
+        file(key) {
+          return {
+            async download() {
+              return [fs.readFileSync(`${baseDir}/${bucketName}/${key}`)]
+            },
+          }
+        },
+      }
+    },
+  }
+}
 
 const port = process.env.PORT || 8080
 app.listen(port, () => {
