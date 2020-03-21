@@ -23,7 +23,7 @@ jobs:
           CI: true
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@b2acf87217804533f885c5fa03e1f03d2a99cb20
-        if: "github.ref == 'master'"
+        if: "github.ref == 'refs/heads/master'"
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
