@@ -1,20 +1,8 @@
-// Copyright 2015 ThoughtWorks, Inc.
-
-// This file is part of getgauge/html-report.
-
-// getgauge/html-report is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-
-// getgauge/html-report is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-
-// You should have received a copy of the GNU General Public License
-// along with getgauge/html-report.  If not, see <http://www.gnu.org/licenses/>.
-
+/*----------------------------------------------------------------
+ *  Copyright (c) ThoughtWorks, Inc.
+ *  Licensed under the Apache License, Version 2.0
+ *  See LICENSE in the project root for license information.
+ *----------------------------------------------------------------*/
 const SORTING_ORDER = {
     DESC:'DESC',
     ASC:'ASC',
@@ -54,9 +42,18 @@ function filterSpecList(status) {
     var specs = $(".spec-list a").filter(function() { return $(this).children().first().is(':visible'); })
     filterSidebar(specs, $('#searchSpecifications').val().trim());
 }
-
+function updateQueryParamsForSpecsUrl(element) {
+    if (!element || isSessionStorageAccessible()) {
+        return;
+    }
+    let url = new URL(element.href);
+    url.search = dataStore.isEmpty() ? '' : `?${dataStore}`;
+    element.href = url.toString();
+}
 function showFirstSpecContent() {
-    $('li.spec-name:visible:first').click();
+    let elem =  $('li.spec-name:visible:first');
+    updateQueryParamsForSpecsUrl(elem.parent()[0])
+    elem.click();
     if ($('li.spec-name:visible:first').length === 0) {
         $('#specificationContainer').hide();
     }
@@ -66,7 +63,9 @@ function filterSidebar(specsCollection, searchText) {
     if (!index) return;
     tagMatches = index.Tags[searchText];
     specsCollection.each(function() {
-        var relPath = $(this).attr('href').split("/");
+        let elem = $(this);
+        updateQueryParamsForSpecsUrl(elem[0])
+        var relPath = elem.attr('href').split("/");
         var fileName = relPath[relPath.length - 1];
         var existsIn = function(arr) {
             if (arr === undefined) {
@@ -77,11 +76,11 @@ function filterSidebar(specsCollection, searchText) {
             });
             return arr.length > 0;
         }
-        specHeadingText = $(this).text().trim().toLowerCase();
+        specHeadingText = elem.text().trim().toLowerCase();
         if (existsIn(tagMatches) || specHeadingText.indexOf(searchText.toLowerCase()) > -1 || searchText === '') {
-            $($(this).find('li')[0]).show();
+            $(elem.find('li')[0]).show();
         } else {
-            $($(this).find('li')[0]).hide();
+            $(elem.find('li')[0]).hide();
         }
     })
 }
@@ -148,10 +147,10 @@ function toggleSortIcons(element, sortingOrder) {
 
 var initializers = {
     "initializeFilters": function() {
-        if (sessionStorage.FilterStatus) {
-            filterSpecList(sessionStorage.FilterStatus);
+        if (dataStore.get('FilterStatus')) {
+            filterSpecList(dataStore.get('FilterStatus'));
             $('.spec-filter').each(function() {
-                if ($(this).data('status') === sessionStorage.FilterStatus) {
+                if ($(this).data('status') === dataStore.get('FilterStatus')) {
                     $(this).addClass('active');
                 }
             });
@@ -161,10 +160,10 @@ var initializers = {
         } else {
             $('.total-specs').addClass('active');
         }
-        if (sessionStorage.SearchText) {
-            $('#searchSpecifications').val(sessionStorage.SearchText);
+        if (dataStore.get('SearchText')) {
+            $('#searchSpecifications').val(dataStore.get('SearchText'));
             var specs = $(".spec-list a");
-            filterSidebar(specs, sessionStorage.SearchText);
+            filterSidebar(specs, dataStore.get('SearchText'));
         }
     },
     "attachScenarioToggle": function() {
@@ -198,7 +197,7 @@ var initializers = {
         $('.spec-filter, #pie-chart path.shadow').click(function() {
             resetState();
             var status = $(this).data('status');
-            sessionStorage.FilterStatus = status;
+            dataStore.insertItem('FilterStatus', status);
             filterSpecList(status);
             showFirstSpecContent();
             $(this).addClass('active');
@@ -206,7 +205,7 @@ var initializers = {
         $('.total-specs').click(function() {
             resetState();
             resetSidebar();
-            sessionStorage.removeItem('FilterStatus');
+            dataStore.removeItem('FilterStatus');
             var specs = $(".spec-list a").filter(function() { return $(this).children().first().is(':visible'); })
             filterSidebar(specs, $('#searchSpecifications').val().trim());
             showFirstSpecContent();
@@ -247,10 +246,10 @@ var initializers = {
         $('#searchSpecifications').change(function() {
             searchText = $(this).val().trim();
             if (searchText.length == 0) {
-                sessionStorage.removeItem('SearchText');
+                dataStore.removeItem('SearchText');
                 resetSidebar();
             } else {
-                sessionStorage.SearchText = searchText;
+                dataStore.insertItem('SearchText',searchText);
                 var specs = $(".spec-list a");
                 filterSidebar(specs, searchText);
             }
@@ -307,8 +306,9 @@ var initializers = {
     "initSpecsSorting": function () {
         $('.specs-sorting .sort').click(function () {
             const sortBy = $(this).data('sort-by');
-            var sortingOrder = sessionStorage[sortBy];
-            sortingOrder = sessionStorage[sortBy] = sortingOrder === SORTING_ORDER.ASC ? SORTING_ORDER.DESC : SORTING_ORDER.ASC;
+            var sortingOrder = dataStore.get(sortBy);
+            sortingOrder = sortingOrder === SORTING_ORDER.ASC ? SORTING_ORDER.DESC : SORTING_ORDER.ASC;
+            dataStore.insertItem(sortBy, sortingOrder);
             var sortingFunc;
             sortingFunc = sortBy === 'specs-name' ? sortSpecsByName : sortSpecsByExecutionTime;
             toggleSortIcons(this, sortingOrder);
@@ -317,6 +317,47 @@ var initializers = {
     }
 };
 
+function isSessionStorageAccessible() {
+    try {
+        sessionStorage
+    } catch(e) {
+       return false;
+    }
+    return true;
+}
+
+class DataStore {
+    constructor(data) {
+        this.data = data;
+    }
+
+    insertItem(key, value) {
+        this.data[key.toLowerCase()] = value;
+    }
+
+    removeItem(key) {
+        delete this.data[key.toLowerCase()]
+    }
+
+    get(key) {
+        return this.data[key.toLowerCase()];
+    }
+
+    isEmpty() {
+        return $.isEmptyObject(this.data);
+    }
+
+    toString() {
+        return JSON.stringify(this.data);
+    }
+}
 $(function() {
+    let data = {};
+    if ( isSessionStorageAccessible()) {
+        data = sessionStorage;
+    } else if( window.location.search) {
+        data = JSON.parse(decodeURI(window.location.search.slice(1)));
+    }
+    dataStore = new DataStore(data)
     $.each(initializers, function(k, v) { v(); });
 });
