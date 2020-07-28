@@ -4,6 +4,7 @@
     "test": "gauge run specs"
   },
   "dependencies": {
+    "@google-cloud/iot": "^2.1.1",
     "@google-cloud/storage": "^4.6.0",
     "@google-cloud/vision": "^1.11.0",
     "dotenv": "^8.2.0",
