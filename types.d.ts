@@ -22,6 +22,7 @@ module Evalaas {
   }
   type File = {
     download: () => Promise<[Buffer]>
+    save: (buffer: Buffer) => Promise<void>
   }
 
   type Registry = {

@@ -4,22 +4,28 @@
     "test": "gauge run specs"
   },
   "dependencies": {
+    "@google-cloud/firestore": "^5.0.2",
     "@google-cloud/iot": "^2.5.1",
     "@google-cloud/storage": "^5.18.1",
     "@google-cloud/vision": "^2.4.2",
-    "@google-cloud/firestore": "^5.0.2",
     "dotenv": "^8.2.0",
     "execa": "^4.0.0",
     "express": "^4.17.2",
+    "express-jwt": "^6.1.0",
+    "express-oauth2-jwt-bearer": "^1.1.0",
+    "form-data": "^4.0.0",
     "isomorphic-fetch": "^3.0.0",
+    "jose": "^4.5.0",
+    "jwks-rsa": "^2.0.5",
     "mkdirp": "^1.0.3",
+    "multer": "^1.4.4",
     "node-fetch": "^2.6.1",
     "p-timeout": "^3.2.0",
     "puppeteer": "^13.3.2",
-    "source-map-support": "^0.5.16",
-    "jose": "^4.5.0"
+    "source-map-support": "^0.5.16"
   },
   "devDependencies": {
+    "axios": "^0.26.0",
     "expect": "^25.1.0"
   },
   "engines": {

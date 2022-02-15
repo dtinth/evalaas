@@ -4,6 +4,7 @@
 require('isomorphic-fetch')
 
 const express = require('express')
+const multer = require('multer')
 const dotenv = require('dotenv')
 const crypto = require('crypto')
 const zlib = require('zlib')
@@ -12,6 +13,7 @@ const vm = require('vm')
 const app = express()
 const { Storage } = require('@google-cloud/storage')
 const { Firestore } = require('@google-cloud/firestore')
+const { auth, claimEquals } = require('express-oauth2-jwt-bearer')
 const { dirname } = require('path')
 
 if (fs.existsSync('.env')) {
@@ -32,19 +34,78 @@ const [, storageBucket, storageKeyPrefix = '/'] = Array.from(
 /** @type {Evalaas.ModuleCache} */
 const moduleCache = {}
 
+/** @type {import('express').RequestHandler} */
+const adminAuthenticate = process.env.EVALAAS_FAKE_TOKEN
+  ? (req, res, next) => {
+      if (
+        req.headers.authorization !== `Bearer ${process.env.EVALAAS_FAKE_TOKEN}`
+      ) {
+        res.status(401).send('Unauthorized')
+        return
+      }
+      next()
+    }
+  : auth({
+      issuerBaseURL: 'https://accounts.google.com',
+    })
+
+/** @type {import('express').RequestHandler} */
+const adminAuthorize = process.env.EVALAAS_FAKE_TOKEN
+  ? (req, res, next) => next()
+  : claimEquals('sub', /** @type {any} */ (process.env.ADMIN_SUBJECT))
+
+const uploadStorage = multer.memoryStorage()
+const upload = multer({ storage: uploadStorage })
+app.put(
+  '/admin/endpoints/:endpointId',
+  adminAuthenticate,
+  adminAuthorize,
+  upload.single('file'),
+  async (req, res, next) => {
+    try {
+      const bucket = storage.bucket(storageBucket)
+      const filePrefix = getFilePrefix(req.params.endpointId)
+      const file = bucket.file(`${filePrefix}.js.gz`)
+      if (!req.file) {
+        throw new Error('No file')
+      }
+      await file.save(req.file.buffer)
+      res.send('ok')
+    } catch (error) {
+      next(error)
+    }
+  },
+)
+app.put(
+  '/admin/env/:endpointId',
+  adminAuthenticate,
+  adminAuthorize,
+  upload.single('file'),
+  async (req, res, next) => {
+    try {
+      const bucket = storage.bucket(storageBucket)
+      const filePrefix = getFilePrefix(req.params.endpointId)
+      const file = bucket.file(`${filePrefix}.env`)
+      if (!req.file) {
+        throw new Error('No file')
+      }
+      await file.save(req.file.buffer)
+      res.send('ok')
+    } catch (error) {
+      next(error)
+    }
+  },
+)
+
 app.use(async (req, res, next) => {
   const match = req.url.match(/^\/run\/([a-zA-Z0-9_-]+)(?:$|\/)/)
   if (!match) {
     return next()
   }
   try {
-    const filename = match[1]
+    const endpointId = match[1]
     const bucket = storage.bucket(storageBucket)
-    const filePrefix = (
-      storageKeyPrefix +
-      (storageKeyPrefix.endsWith('/') ? '' : '/') +
-      filename
-    ).replace(/^\//, '')
+    const filePrefix = getFilePrefix(endpointId)
 
     const envFile = bucket.file(filePrefix + '.env')
     const envPromise = envFile
@@ -61,11 +122,11 @@ app.use(async (req, res, next) => {
       .update(sourceResponse)
       .digest('hex')
 
-    let cachedModule = moduleCache[filename]
+    let cachedModule = moduleCache[endpointId]
     if (!cachedModule || cachedModule.hash !== hash) {
       console.log(
         '[Compile]',
-        filename,
+        endpointId,
         cachedModule ? cachedModule.hash : '(new)',
         '->',
         hash,
@@ -74,9 +135,9 @@ app.use(async (req, res, next) => {
       cachedModule = {
         hash,
         source: sourceCode,
-        module: loadModule(filename, hash, sourceCode),
+        module: loadModule(endpointId, hash, sourceCode),
       }
-      moduleCache[filename] = cachedModule
+      moduleCache[endpointId] = cachedModule
     }
     req.url = req.url.slice(match[0].replace(/\/$/, '').length) || '/'
     req.env = await envPromise
@@ -88,6 +149,17 @@ app.use(async (req, res, next) => {
     next(error)
   }
 })
+
+/**
+ * @param {string} endpointId
+ */
+function getFilePrefix(endpointId) {
+  return (
+    storageKeyPrefix +
+    (storageKeyPrefix.endsWith('/') ? '' : '/') +
+    endpointId
+  ).replace(/^\//, '')
+}
 
 /**
  * @param {string} filename
@@ -152,6 +224,12 @@ function createFakeStorage(baseDir) {
           return {
             async download() {
               return [fs.readFileSync(`${baseDir}/${bucketName}/${key}`)]
+            },
+            async save(buffer) {
+              fs.mkdirSync(dirname(`${baseDir}/${bucketName}/${key}`), {
+                recursive: true,
+              })
+              fs.writeFileSync(`${baseDir}/${bucketName}/${key}`, buffer)
             },
           }
         },
