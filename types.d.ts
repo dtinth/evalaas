@@ -30,7 +30,7 @@ module Evalaas {
   }
   type RegistryValueReference<T = any> = {
     get(): Promise<RegistryValueSnapshot<T>>
-    set(data: T): Promise<{}>
+    set(data: T, options: { merge: true }): Promise<{}>
   }
   type RegistryValueSnapshot<T> = {
     exists: boolean
