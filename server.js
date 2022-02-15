@@ -1,7 +1,7 @@
 // @ts-check
 /// <reference path="./types.d.ts" />
 
-require('@google-cloud/trace-agent').start()
+const tracer = require('@google-cloud/trace-agent').start()
 require('isomorphic-fetch')
 
 const express = require('express')
@@ -203,6 +203,7 @@ app.use(async (req, res, next) => {
     }
     req.url = req.url.slice(match[0].replace(/\/$/, '').length) || '/'
     req.env = await envPromise
+    req.tracer = tracer
     await perf.measure('Process request', () =>
       (cachedModule.module.exports.default || cachedModule.module.exports)(
         req,
