@@ -20,8 +20,9 @@ jobs:
           sudo apt-get install pack-cli -y
       - name: build
         run: pack build --builder gcr.io/buildpacks/builder:v1 evalaas
+      - run: docker history evalaas
       - name: run
-        run: docker run -ti --rm --init -p 3741:3741 -e EVALAAS_STORAGE_BASE=gs://demo-evalaas -e EVALAAS_FAKE_STORAGE_DIR=tmp/fakefs -v $PWD/tmp/fakefs:/usr/src/app/tmp/fakefs -e EVALAAS_FAKE_REGISTRY_DIR=tmp/fakereg -v $PWD/tmp/fakefs:/usr/src/app/tmp/fakereg -e EVALAAS_FAKE_TOKEN=admintoken -e PORT=3741 evalaas
+        run: docker run -d --name evalaas --init -p 3741:3741 -e EVALAAS_STORAGE_BASE=gs://demo-evalaas -e EVALAAS_FAKE_STORAGE_DIR=tmp/fakefs -v $PWD/tmp/fakefs:/usr/src/app/tmp/fakefs -e EVALAAS_FAKE_REGISTRY_DIR=tmp/fakereg -v $PWD/tmp/fakefs:/usr/src/app/tmp/fakereg -e EVALAAS_FAKE_TOKEN=admintoken -e PORT=3741 evalaas
       - run: npx wait-on http://localhost:3741
       - run: yarn test
         env:
