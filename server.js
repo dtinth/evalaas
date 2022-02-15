@@ -64,12 +64,15 @@ app.put(
   async (req, res, next) => {
     try {
       const bucket = storage.bucket(storageBucket)
-      const filePrefix = getFilePrefix(req.params.endpointId)
+      const endpointId = req.params.endpointId
+      const filePrefix = getFilePrefix(endpointId)
       const file = bucket.file(`${filePrefix}.js.gz`)
       if (!req.file) {
         throw new Error('No file')
       }
-      await file.save(req.file.buffer)
+      const buffer = req.file.buffer
+      await file.save(buffer)
+      await updateTime(endpointId)
       res.send('ok')
     } catch (error) {
       next(error)
@@ -85,18 +88,29 @@ app.put(
   async (req, res, next) => {
     try {
       const bucket = storage.bucket(storageBucket)
-      const filePrefix = getFilePrefix(req.params.endpointId)
+      const endpointId = req.params.endpointId
+      const filePrefix = getFilePrefix(endpointId)
       const file = bucket.file(`${filePrefix}.env`)
       if (!req.file) {
         throw new Error('No file')
       }
       await file.save(req.file.buffer)
+      await updateTime(endpointId)
       res.send('ok')
     } catch (error) {
       next(error)
     }
   },
 )
+
+/**
+ * @param {string} endpointId
+ */
+function updateTime(endpointId) {
+  return registry
+    .doc(`apps/evalaas/endpoints/${endpointId}`)
+    .set({ updatedAt: new Date().toISOString() }, { merge: true })
+}
 
 app.use(async (req, res, next) => {
   const match = req.url.match(/^\/run\/([a-zA-Z0-9_-]+)(?:$|\/)/)
@@ -118,10 +132,7 @@ app.use(async (req, res, next) => {
     const sourceResponse = await sourceFile
       .download()
       .then(([buffer]) => buffer)
-    const hash = crypto
-      .createHash('sha256')
-      .update(sourceResponse)
-      .digest('hex')
+    const hash = hashBuffer(sourceResponse)
 
     let cachedModule = moduleCache[endpointId]
     if (!cachedModule || cachedModule.hash !== hash) {
@@ -285,4 +296,11 @@ function createFakeRegistry(baseDir) {
       }
     },
   }
+}
+
+/**
+ * @param {Buffer} buffer
+ */
+function hashBuffer(buffer) {
+  return crypto.createHash('sha256').update(buffer).digest('hex')
 }
