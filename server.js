@@ -173,7 +173,9 @@ app.use(async (req, res, next) => {
         .measure('Download source', () => sourceFile.download())
         .then(([buffer]) => buffer),
     )
-    const hash = hashBuffer(sourceResponse)
+    const hash = await perf.measure('Hash source', async () =>
+      hashBuffer(sourceResponse),
+    )
 
     let cachedModule = moduleCache[endpointId]
     if (!cachedModule || cachedModule.hash !== hash) {
