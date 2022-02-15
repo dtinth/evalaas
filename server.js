@@ -113,6 +113,38 @@ function updateTime(endpointId) {
     .set({ updatedAt: new Date().toISOString() }, { merge: true })
 }
 
+/**
+ * @param {string} endpointId
+ */
+function getUpdatedTime(endpointId) {
+  return registry
+    .doc(`apps/evalaas/endpoints/${endpointId}`)
+    .get()
+    .then((snapshot) =>
+      snapshot.exists ? snapshot.data().updatedAt : undefined,
+    )
+}
+
+const cacheData = new Map()
+
+/**
+ * @param {string} cacheKey
+ * @param {string | undefined} updatedTime
+ * @param {() => Promise<T>} fetcher
+ * @template T
+ */
+async function cache(cacheKey, updatedTime, fetcher) {
+  if (cacheData.has(cacheKey)) {
+    const [value, lastUpdated] = cacheData.get(cacheKey)
+    if (lastUpdated === updatedTime) {
+      return value
+    }
+  }
+  const result = await fetcher()
+  cacheData.set(cacheKey, [result, updatedTime])
+  return result
+}
+
 app.use(async (req, res, next) => {
   const match = req.url.match(/^\/run\/([a-zA-Z0-9_-]+)(?:$|\/)/)
   if (!match) {
@@ -122,17 +154,25 @@ app.use(async (req, res, next) => {
     const endpointId = match[1]
     const bucket = storage.bucket(storageBucket)
     const filePrefix = getFilePrefix(endpointId)
+    const updatedTime = await perf.measure(
+      'Get endpoint info from registry',
+      () => getUpdatedTime(endpointId),
+    )
 
     const envFile = bucket.file(filePrefix + '.env')
-    const envPromise = perf
-      .measure('Download env', () => envFile.download())
-      .catch((e) => '')
-      .then(([b]) => dotenv.parse(String(b)))
+    const envPromise = cache(filePrefix + '.env', updatedTime, () =>
+      perf
+        .measure('Download env', () => envFile.download())
+        .catch((e) => '')
+        .then(([b]) => dotenv.parse(String(b))),
+    )
 
     const sourceFile = bucket.file(filePrefix + '.js.gz')
-    const sourceResponse = await perf
-      .measure('Download source', () => sourceFile.download())
-      .then(([buffer]) => buffer)
+    const sourceResponse = await cache(filePrefix + '.js.gz', updatedTime, () =>
+      perf
+        .measure('Download source', () => sourceFile.download())
+        .then(([buffer]) => buffer),
+    )
     const hash = hashBuffer(sourceResponse)
 
     let cachedModule = moduleCache[endpointId]
