@@ -57,7 +57,7 @@ Check out [the **basic usage** example](<./specs/Basic usage.md>) which also ser
 3. Run evalaas with fake filesystem
 
    ```
-   docker run -ti --rm --init -p 3741:3741 -e EVALAAS_STORAGE_BASE=gs://demo-evalaas -e EVALAAS_FAKE_STORAGE_DIR=tmp/fakefs -v $PWD/tmp/fakefs:/usr/src/app/tmp/fakefs evalaas
+   docker run -ti --rm --init -p 3741:3741 -e EVALAAS_STORAGE_BASE=gs://demo-evalaas -e EVALAAS_FAKE_STORAGE_DIR=tmp/fakefs -v $PWD/tmp/fakefs:/usr/src/app/tmp/fakefs -e EVALAAS_FAKE_REGISTRY_DIR=tmp/fakereg -v $PWD/tmp/fakefs:/usr/src/app/tmp/fakereg -e EVALAAS_FAKE_TOKEN=admintoken evalaas
    ```
 
 ## Deployment

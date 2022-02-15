@@ -13,13 +13,22 @@ jobs:
       - name: setup gauge
         run: |
           npm install -g @getgauge/cli
-      - run: yarn
+      - name: setup buildpack
+        run: |
+          sudo add-apt-repository ppa:cncf-buildpacks/pack-cli
+          sudo apt-get update
+          sudo apt-get install pack-cli
+      - name: build
+        run: pack build --builder gcr.io/buildpacks/builder:v1 evalaas
+      - name: run
+        run: docker run -ti --rm --init -p 3741:3741 -e EVALAAS_STORAGE_BASE=gs://demo-evalaas -e EVALAAS_FAKE_STORAGE_DIR=tmp/fakefs -v $PWD/tmp/fakefs:/usr/src/app/tmp/fakefs -e EVALAAS_FAKE_REGISTRY_DIR=tmp/fakereg -v $PWD/tmp/fakefs:/usr/src/app/tmp/fakereg -e EVALAAS_FAKE_TOKEN=admintoken -e PORT=3741 evalaas
+      - run: npx wait-on http://localhost:3741
       - run: yarn test
         env:
           CI: true
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@e0c5ab92a572c0a97d95564c9bd1d7c131623ff1
-        if: "github.ref == 'refs/heads/master'"
+        if: "github.ref == 'refs/heads/main'"
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages

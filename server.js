@@ -76,6 +76,7 @@ app.put(
     }
   },
 )
+
 app.put(
   '/admin/env/:endpointId',
   adminAuthenticate,
@@ -148,6 +149,10 @@ app.use(async (req, res, next) => {
   } catch (error) {
     next(error)
   }
+})
+
+app.get('/', (req, res) => {
+  res.send('hi')
 })
 
 /**
