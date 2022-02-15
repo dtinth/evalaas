@@ -9,14 +9,10 @@ jobs:
       - name: Use Node.js 12
         uses: actions/setup-node@v1
         with:
-          node-version: '12.x'
+          node-version: '16.x'
       - name: setup gauge
         run: |
-          sudo apt-key adv --keyserver hkp://pool.sks-keyservers.net --recv-keys 023EDB0B
-          echo deb https://dl.bintray.com/gauge/gauge-deb stable main | sudo tee -a /etc/apt/sources.list
-          sudo apt-get update
-          sudo apt-get install gauge -y
-          gauge install
+          npm install -g @getgauge/cli
       - run: yarn
       - run: yarn test
         env:

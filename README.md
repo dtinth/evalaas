@@ -44,6 +44,16 @@ Check out [the **basic usage** example](<./specs/Basic usage.md>) which also ser
   that means you can give your code access to native modules by listing them in `package.json`.
   For example, `puppeteer` and `@google-cloud/vision` is listed inside this project’s `package.json` although it is not used here because some of my projects may use it.
 
+## Building and testing locally
+
+1. Install [buildpacks](https://buildpacks.io/docs/tools/pack/)
+
+2. Build the image
+
+   ```
+   pack build --builder gcr.io/buildpacks/builder:v1 evalaas
+   ```
+
 ## Deployment
 
 **Building the image on the cloud:**
