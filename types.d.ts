@@ -1,6 +1,7 @@
 module Express {
   interface Request {
     env: { [key: string]: string }
+    tracer: import('@google-cloud/trace-agent').PluginTypes.Tracer
   }
 }
 
