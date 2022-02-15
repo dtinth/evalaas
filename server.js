@@ -1,6 +1,7 @@
 // @ts-check
 /// <reference path="./types.d.ts" />
 
+require('@google-cloud/trace-agent').start()
 require('isomorphic-fetch')
 
 const express = require('express')
