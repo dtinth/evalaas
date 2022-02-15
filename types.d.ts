@@ -22,5 +22,18 @@ module Evalaas {
   }
   type File = {
     download: () => Promise<[Buffer]>
+    save: (buffer: Buffer) => Promise<void>
+  }
+
+  type Registry = {
+    doc(path: string): RegistryValueReference
+  }
+  type RegistryValueReference<T = any> = {
+    get(): Promise<RegistryValueSnapshot<T>>
+    set(data: T): Promise<{}>
+  }
+  type RegistryValueSnapshot<T> = {
+    exists: boolean
+    data(): T | undefined
   }
 }

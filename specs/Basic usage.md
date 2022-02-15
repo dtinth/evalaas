@@ -6,17 +6,11 @@
 
 This guide assumes that evalaas is already deployed.
 
-* You have created the Google Cloud Storage bucket named "`evalaas-test`"
-* You have configured the environment variable "`EVALAAS_STORAGE_BASE`" to "`gs://evalaas-test`"
-* You have deployed evalaas to Google Cloud Run and made it accessible at "`https://test.evalaas.dev`"
-
 ## Deploy a JavaScript endpoint
 
-After setting up, deploying a simple endpoint is not much more complicated than an old-school way of copying PHP files to an FTP server.
+After setting up, you can deploy endpoints using the `PUT /admin/deploy/:endpointId` endpoint with a bearer token.
 
-But here, the file must gzipped before uploading, Google Cloud Storage is used instead of FTP. To upload files to GCS from a shell script, you can use the [gsutil](https://cloud.google.com/storage/docs/gsutil) command.
-
-* Compress and upload "[example-files/hello.js](example-files/hello.js)" to "`gs://evalaas-test/hello.js.gz`"
+* Compress and PUT "[example-files/hello.js](example-files/hello.js)" to "`https://test.evalaas.dev/admin/endpoints/hello`"
 * Make a GET request to "`https://test.evalaas.dev/run/hello`"
 * You should get the following JSON response:
 
@@ -30,7 +24,7 @@ One of the advantage of using evalaas is **almost instant deploys.** When you up
 
 First, upload the 1st version:
 
-* Compress and upload "[example-files/hello.js](example-files/hello.js)" to "`gs://evalaas-test/hello.js.gz`"
+* Compress and PUT "[example-files/hello.js](example-files/hello.js)" to "`https://test.evalaas.dev/admin/endpoints/hello`"
 * Make a GET request to "`https://test.evalaas.dev/run/hello`"
 * You should get the following JSON response:
 
@@ -40,7 +34,7 @@ First, upload the 1st version:
 
 Then, upload the 2nd version:
 
-* Compress and upload "[example-files/hello-v2.js](example-files/hello-v2.js)" to "`gs://evalaas-test/hello.js.gz`"
+* Compress and PUT "[example-files/hello-v2.js](example-files/hello-v2.js)" to "`https://test.evalaas.dev/admin/endpoints/hello`"
 * Make a GET request to "`https://test.evalaas.dev/run/hello`"
 * You should get the following JSON response:
 
@@ -54,8 +48,8 @@ Since multiple endpoints may be run on the same Node.js process (unless you depl
 
 However, we still may want to give each endpoint a different configuration, but we might not want to hard-code them into the source code or check them into source control. Alternatively, you can upload a `.env` file next to the `.js.gz` file, and it will be made available in the endpoint as `req.env`.
 
-* Compress and upload "[example-files/env-example.js](example-files/env-example.js)" to "`gs://evalaas-test/env-example.js.gz`"
-* Upload a file to "`gs://evalaas-test/env-example.env`" with the following contents
+* Compress and PUT "[example-files/env-example.js](example-files/env-example.js)" to "`https://test.evalaas.dev/admin/endpoints/env-example`"
+* PUT to "`https://test.evalaas.dev/admin/env/env-example`" with the following contents
 
   | `env-example.env` |
   | --- |
@@ -74,7 +68,7 @@ However, we still may want to give each endpoint a different configuration, but 
 
 To make compiled endpoints easy to debug, evalaas supports **inline source maps**.
 
-* Compress and upload "[example-files/source-map-example.js](example-files/source-map-example.js)" to "`gs://evalaas-test/source-map-example.js.gz`"
+* Compress and PUT "[example-files/source-map-example.js](example-files/source-map-example.js)" to "`https://test.evalaas.dev/admin/endpoints/source-map-example`"
 * Make a GET request to "`https://test.evalaas.dev/run/source-map-example`"
 * You should find these strings in the response:
 
@@ -139,7 +133,7 @@ yarn add --dev webpack webpack-cli && yarn webpack
 
 If your endpoint function **throws** or returns a **rejected promise**, evalaas will send a response of status 500.
 
-* Compress and upload "[example-files/error-example.js](example-files/error-example.js)" to "`gs://evalaas-test/error-example.js.gz`"
+* Compress and PUT "[example-files/error-example.js](example-files/error-example.js)" to "`https://test.evalaas.dev/admin/endpoints/error-example`"
 * Make a GET request to "`https://test.evalaas.dev/run/error-example`"
 * You should get a response with status code "500"
 
@@ -147,7 +141,7 @@ If your endpoint function **throws** or returns a **rejected promise**, evalaas 
 
 You can use `fetch()` to call other HTTP endpoints without installing any extra server.
 
-* Compress and upload "[example-files/fetch-example.js](example-files/fetch-example.js)" to "`gs://evalaas-test/fetch-example.js.gz`"
+* Compress and PUT "[example-files/fetch-example.js](example-files/fetch-example.js)" to "`https://test.evalaas.dev/admin/endpoints/fetch-example`"
 * Make a GET request to "`https://test.evalaas.dev/run/fetch-example`"
 * You should get the following JSON response:
 

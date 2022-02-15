@@ -9,21 +9,26 @@ jobs:
       - name: Use Node.js 12
         uses: actions/setup-node@v1
         with:
-          node-version: '12.x'
-      - name: setup gauge
+          node-version: '16.x'
+      - name: Setup gauge
         run: |
-          sudo apt-key adv --keyserver hkp://pool.sks-keyservers.net --recv-keys 023EDB0B
-          echo deb https://dl.bintray.com/gauge/gauge-deb stable main | sudo tee -a /etc/apt/sources.list
+          npm install -g @getgauge/cli
+      - name: Setup buildpack
+        run: |
+          sudo add-apt-repository ppa:cncf-buildpacks/pack-cli
           sudo apt-get update
-          sudo apt-get install gauge -y
-          gauge install
+          sudo apt-get install pack-cli -y
+      - run: pack build --builder gcr.io/buildpacks/builder:v1 evalaas
+      - run: docker history evalaas
+      - run: docker run -d --name evalaas --init -p 3741:3741 -e EVALAAS_STORAGE_BASE=gs://demo-evalaas -e EVALAAS_FAKE_STORAGE_DIR=tmp/fakefs -v $PWD/tmp/fakefs:/usr/src/app/tmp/fakefs -e EVALAAS_FAKE_REGISTRY_DIR=tmp/fakereg -v $PWD/tmp/fakefs:/usr/src/app/tmp/fakereg -e EVALAAS_FAKE_TOKEN=admintoken -e PORT=3741 evalaas
+      - run: npx wait-on http://localhost:3741
       - run: yarn
       - run: yarn test
         env:
           CI: true
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@e0c5ab92a572c0a97d95564c9bd1d7c131623ff1
-        if: "github.ref == 'refs/heads/master'"
+        if: "github.ref == 'refs/heads/main'"
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages

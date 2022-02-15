@@ -44,6 +44,22 @@ Check out [the **basic usage** example](<./specs/Basic usage.md>) which also ser
   that means you can give your code access to native modules by listing them in `package.json`.
   For example, `puppeteer` and `@google-cloud/vision` is listed inside this project’s `package.json` although it is not used here because some of my projects may use it.
 
+## Building and testing locally
+
+1. Install [buildpacks](https://buildpacks.io/docs/tools/pack/)
+
+2. Build the image
+
+   ```
+   pack build --builder gcr.io/buildpacks/builder:v1 evalaas
+   ```
+
+3. Run evalaas with fake filesystem
+
+   ```
+   docker run -ti --rm --init -p 3741:3741 -e EVALAAS_STORAGE_BASE=gs://demo-evalaas -e EVALAAS_FAKE_STORAGE_DIR=tmp/fakefs -v $PWD/tmp/fakefs:/usr/src/app/tmp/fakefs -e EVALAAS_FAKE_REGISTRY_DIR=tmp/fakereg -v $PWD/tmp/fakefs:/usr/src/app/tmp/fakereg -e EVALAAS_FAKE_TOKEN=admintoken -e PORT=3741 evalaas
+   ```
+
 ## Deployment
 
 **Building the image on the cloud:**
