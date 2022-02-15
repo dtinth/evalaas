@@ -22,6 +22,7 @@ if (fs.existsSync('.env')) {
 
 const storage = createStorage()
 const registry = createRegistry()
+const perf = createPerfLogger()
 
 const EVALAAS_STORAGE_BASE = process.env.EVALAAS_STORAGE_BASE
 if (!EVALAAS_STORAGE_BASE) {
@@ -123,14 +124,14 @@ app.use(async (req, res, next) => {
     const filePrefix = getFilePrefix(endpointId)
 
     const envFile = bucket.file(filePrefix + '.env')
-    const envPromise = envFile
-      .download()
+    const envPromise = perf
+      .measure('Download env', () => envFile.download())
       .catch((e) => '')
       .then(([b]) => dotenv.parse(String(b)))
 
     const sourceFile = bucket.file(filePrefix + '.js.gz')
-    const sourceResponse = await sourceFile
-      .download()
+    const sourceResponse = await perf
+      .measure('Download source', () => sourceFile.download())
       .then(([buffer]) => buffer)
     const hash = hashBuffer(sourceResponse)
 
@@ -143,19 +144,27 @@ app.use(async (req, res, next) => {
         '->',
         hash,
       )
-      const sourceCode = zlib.gunzipSync(sourceResponse).toString('utf8')
+      const sourceCode = await perf.measure(
+        'Gunzip ' + sourceResponse.length + ' bytes',
+        async () => zlib.gunzipSync(sourceResponse).toString('utf8'),
+      )
       cachedModule = {
         hash,
         source: sourceCode,
-        module: loadModule(endpointId, hash, sourceCode),
+        module: await perf.measure(
+          'Load module ' + sourceResponse.length + ' bytes',
+          async () => loadModule(endpointId, hash, sourceCode),
+        ),
       }
       moduleCache[endpointId] = cachedModule
     }
     req.url = req.url.slice(match[0].replace(/\/$/, '').length) || '/'
     req.env = await envPromise
-    await (cachedModule.module.exports.default || cachedModule.module.exports)(
-      req,
-      res,
+    await perf.measure('Process request', () =>
+      (cachedModule.module.exports.default || cachedModule.module.exports)(
+        req,
+        res,
+      ),
     )
   } catch (error) {
     next(error)
@@ -164,6 +173,11 @@ app.use(async (req, res, next) => {
 
 app.get('/', (req, res) => {
   res.send('hi')
+})
+
+app.get('/perf', (req, res) => {
+  res.set('Content-Type', 'text/plain')
+  res.send(perf.getReport())
 })
 
 /**
@@ -303,4 +317,29 @@ function createFakeRegistry(baseDir) {
  */
 function hashBuffer(buffer) {
   return crypto.createHash('sha256').update(buffer).digest('hex')
+}
+
+function createPerfLogger() {
+  /** @type {string[]} */
+  let data = []
+  return {
+    /**
+     * @template T
+     * @param {string} thing
+     * @param {() => Promise<T>} f
+     */
+    async measure(thing, f) {
+      const start = Date.now()
+      const result = await f()
+      const end = Date.now()
+      data.push(`[${new Date().toISOString()}] ${thing} ${end - start}ms`)
+      if (data.length > 100) {
+        data = data.slice(-50)
+      }
+      return result
+    },
+    getReport() {
+      return data.join('\n')
+    },
+  }
 }

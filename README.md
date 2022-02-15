@@ -65,7 +65,7 @@ Check out [the **basic usage** example](<./specs/Basic usage.md>) which also ser
 **Building the image on the cloud:**
 
 ```
-gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/evalaas
+gcloud builds submit --pack image=gcr.io/$GOOGLE_CLOUD_PROJECT/evalaas
 ```
 
 **Deploying the image to the cloud:**
