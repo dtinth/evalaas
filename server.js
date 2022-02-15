@@ -11,13 +11,15 @@ const fs = require('fs')
 const vm = require('vm')
 const app = express()
 const { Storage } = require('@google-cloud/storage')
+const { Firestore } = require('@google-cloud/firestore')
+const { dirname } = require('path')
 
-/**
- * @type {Evalaas.Storage}
- */
-const storage = process.env.EVALAAS_FAKE_STORAGE_DIR
-  ? createFakeStorage(process.env.EVALAAS_FAKE_STORAGE_DIR)
-  : new Storage()
+if (fs.existsSync('.env')) {
+  dotenv.config()
+}
+
+const storage = createStorage()
+const registry = createRegistry()
 
 const EVALAAS_STORAGE_BASE = process.env.EVALAAS_STORAGE_BASE
 if (!EVALAAS_STORAGE_BASE) {
@@ -26,10 +28,6 @@ if (!EVALAAS_STORAGE_BASE) {
 const [, storageBucket, storageKeyPrefix = '/'] = Array.from(
   EVALAAS_STORAGE_BASE.match(/^gs:\/\/([^/]+)(\/.*)?$/) || [],
 )
-
-if (fs.existsSync('.env')) {
-  dotenv.config()
-}
 
 /** @type {Evalaas.ModuleCache} */
 const moduleCache = {}
@@ -51,7 +49,7 @@ app.use(async (req, res, next) => {
     const envFile = bucket.file(filePrefix + '.env')
     const envPromise = envFile
       .download()
-      .catch(e => '')
+      .catch((e) => '')
       .then(([b]) => dotenv.parse(String(b)))
 
     const sourceFile = bucket.file(filePrefix + '.js.gz')
@@ -111,7 +109,7 @@ require('source-map-support').install({
   /**
    * @returns {any}
    */
-  retrieveFile: function(path) {
+  retrieveFile: function (path) {
     const match = path.match(/^\/evalaas\/([^/]+)\/(\w+)\.js$/)
     if (!match) {
       return null
@@ -127,6 +125,20 @@ require('source-map-support').install({
     return cachedModule.source
   },
 })
+
+const port = process.env.PORT || 8080
+app.listen(port, () => {
+  console.log('evalaas listening on port', port)
+})
+
+/**
+ * @returns {Evalaas.Storage}
+ */
+function createStorage() {
+  return process.env.EVALAAS_FAKE_STORAGE_DIR
+    ? createFakeStorage(process.env.EVALAAS_FAKE_STORAGE_DIR)
+    : new Storage()
+}
 
 /**
  * @param {string} baseDir
@@ -148,7 +160,46 @@ function createFakeStorage(baseDir) {
   }
 }
 
-const port = process.env.PORT || 8080
-app.listen(port, () => {
-  console.log('evalaas listening on port', port)
-})
+/**
+ * @returns {Evalaas.Registry}
+ */
+function createRegistry() {
+  return process.env.EVALAAS_FAKE_REGISTRY_DIR
+    ? createFakeRegistry(process.env.EVALAAS_FAKE_REGISTRY_DIR)
+    : new Firestore()
+}
+
+/**
+ * @param {string} baseDir
+ * @returns {Evalaas.Registry}
+ */
+function createFakeRegistry(baseDir) {
+  return {
+    doc(path) {
+      return {
+        async get() {
+          try {
+            const data = fs.readFileSync(`${baseDir}/${path}`, 'utf8')
+            return {
+              exists: true,
+              data: () => JSON.parse(data),
+            }
+          } catch (e) {
+            if (/** @type {any} */ (e).code === 'ENOENT') {
+              return {
+                exists: false,
+                data: () => undefined,
+              }
+            }
+            throw e
+          }
+        },
+        async set(data) {
+          fs.mkdirSync(dirname(`${baseDir}/${path}`), { recursive: true })
+          fs.writeFileSync(`${baseDir}/${path}`, JSON.stringify(data))
+          return {}
+        },
+      }
+    },
+  }
+}

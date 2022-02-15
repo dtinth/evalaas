@@ -54,6 +54,12 @@ Check out [the **basic usage** example](<./specs/Basic usage.md>) which also ser
    pack build --builder gcr.io/buildpacks/builder:v1 evalaas
    ```
 
+3. Run evalaas with fake filesystem
+
+    ```
+    docker run -ti --rm --init -p 3741:3741 -e EVALAAS_STORAGE_BASE=gs://demo-evalaas -e EVALAAS_FAKE_STORAGE_DIR=tmp/fakefs -v $PWD/tmp/fakefs:/usr/src/app/tmp/fakefs evalaas
+    ```
+
 ## Deployment
 
 **Building the image on the cloud:**

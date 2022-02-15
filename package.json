@@ -7,6 +7,7 @@
     "@google-cloud/iot": "^2.5.1",
     "@google-cloud/storage": "^5.18.1",
     "@google-cloud/vision": "^2.4.2",
+    "@google-cloud/firestore": "^5.0.2",
     "dotenv": "^8.2.0",
     "execa": "^4.0.0",
     "express": "^4.17.2",
@@ -15,7 +16,8 @@
     "node-fetch": "^2.6.1",
     "p-timeout": "^3.2.0",
     "puppeteer": "^13.3.2",
-    "source-map-support": "^0.5.16"
+    "source-map-support": "^0.5.16",
+    "jose": "^4.5.0"
   },
   "devDependencies": {
     "expect": "^25.1.0"
